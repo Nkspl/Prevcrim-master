@@ -1,0 +1,287 @@
+/* css/style.css */
+
+/* Reset global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+  }
+  
+  /* Header (Encabezado) */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: #004466;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  #btnToggleSidebar {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 15px;
+  }
+  .home-btn {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    
+  }
+ /*color y posicion del nombre de usuario en el encabezado*/
+  .user-info {
+    margin-left: auto;
+    color: #f4f1f1;
+  }
+
+/* Icono en el link de Cerrar Sesión */
+.user-info .logout-btn {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;               /* mismo color que el header */
+  text-decoration: none;     /* quita subrayado */
+  margin-left: 40px; /* Alejar o acercar un pocoel nombre de usuario al boton cerrar sesion */
+}
+
+.user-info .logout-btn i {
+  margin-right: 5px;         /* separa icono del texto */
+  font-size: 1em;            /* o ajústalo si quieres */
+}
+
+/* Hover para que se vea interactivo */
+.user-info .logout-btn:hover {
+  color: #f6f4f4;
+}
+
+/*SEGUNDA OPCION */
+/* Oculta el texto de logout (cerrar sesion) por defecto */
+.logout-btn .logout-text {
+  display: none;
+  margin-left: 5px;       /* espacio entre icono y texto */
+  white-space: nowrap;    /* evitar que el texto se parta en varias líneas */
+}
+
+/* Al hacer hover sobre el enlace, muestra el texto */
+.logout-btn:hover .logout-text {
+  display: inline-block;
+}
+
+/* cambia el color de icono/texto al hover */
+.logout-btn:hover {
+  color: #f6f4f4;
+}
+
+
+
+  /* Sidebar (Menu "Barra lateral") */
+  #sidebar {
+    position: fixed;
+    top: 60px; left: 0; bottom: 0;
+    width: 220px;
+    background: #003355;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+  }
+  #sidebar.hidden {
+    transform: translateX(-220px);
+  }
+  #sidebar button {
+    display: flex;                   /* flex para icono + texto */
+    align-items: center;         /* verticalmente centrado */
+    justify-content: left;    /* horizontalmente a la izquierda */
+    width: 100%;
+    margin: 0px auto;
+    padding: 15px;
+    border: none;
+    background: #00335d;
+    color: #fff;
+    font-size: 16px;
+    text-align: left;
+    border-radius: 4px;
+    cursor: pointer;
+  /* nueva transición suave */
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  #sidebar button i {
+    margin-right: 45px;
+    margin-left: 6px;
+  }
+  
+/*Hover: pequeño movimiento al pasar el mouse */
+#sidebar button:hover {
+ /* se mueve 5px hacia la derecha */
+ transform: translateX(5px);
+ /* oscurece ligeramente el fondo al pasar el mouse */
+ background-color: #0066aa;
+}
+
+
+  /* Wrapper & Content */
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  .content {
+    flex: 1;
+    margin: 80px 20px 20px 250px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+
+  /* Formularios */
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  .form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 400px;
+  }
+  form button {
+    margin-top: 20px;
+    padding: 10px;
+    background: #004466;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+
+
+/* === Formulario de búsqueda sobre el mapa === */
+.map-search {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+.map-search label {
+  font-weight: bold;
+}
+.map-search input {
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.map-search button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  background-color: #004466;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.map-search button:hover {
+  background-color: #005599;
+}
+
+
+
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  /* Footer estatico */
+  footer {
+    position: fixed;      /* Fija el footer en la ventana */
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: #004466;
+    color: #fff;
+    z-index: 1000;        /* Asegura que se sitúe sobre otros elementos */
+}
+
+
+
+
+  /* Mensajes de advertencias */
+  .error { color: red; margin: 10px 0; }
+  .msg   { color: green; margin: 10px 0; }
+  
+
+
+
+
+
+
+  /* Orden de label e input de la lista de reportes de archivo:reportes.php */
+#sub_tit_ing_list_del{
+margin-top: 3%;
+margin-bottom: -3.5%;
+
+}
+
+
+
+
+
+#ing_list_del{
+  width: 28%;
+/*margin-top: 4%;*/
+margin-top: 5%;
+  height: 30px;
+padding: 0 0.5rem;
+  box-sizing: border-box;/* que el padding quede dentro del ancho */
+}
+
+#btn_ing_list_del {
+flex-shrink: 0;
+margin-top: -2.5%;
+height: 32px;
+background-color: #004466;
+cursor: pointer;
+transition: background-color 0.2s ease;
+padding: 0 1rem;
+ 
+}
+
+
