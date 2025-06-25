@@ -31,6 +31,7 @@ $datos = [
   'longitud'        => trim($_POST['longitud']),
 ];
 
+
 $sql="INSERT INTO delincuente
     (rut,apellidos_nombres,apodo,domicilio,ultimo_lugar_visto,
      fono_fijo,celular,email,fecha_nacimiento,delitos,estado,
