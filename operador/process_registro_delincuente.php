@@ -31,12 +31,11 @@ $datos = [
   'longitud'        => trim($_POST['longitud']),
 ];
 
-$stmt=$pdo->prepare("
-  SELECT id FROM delincuente WHERE rut=:rut
-");
-$stmt->execute(['rut'=>$datos['rut']]);
-if ($stmt->rowCount()>0) {
-  header("Location: registro_delincuente.php?msg=Ya existe"); exit();
+$stmt = $pdo->prepare("SELECT 1 FROM delincuente WHERE rut = :rut");
+$stmt->execute(['rut' => $datos['rut']]);
+if ($stmt->fetch()) {
+  header("Location: registro_delincuente.php?msg=Ya existe");
+  exit();
 }
 
 $sql="INSERT INTO delincuente
