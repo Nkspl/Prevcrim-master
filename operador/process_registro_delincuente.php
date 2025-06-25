@@ -31,12 +31,36 @@ $datos = [
   'longitud'        => trim($_POST['longitud']),
 ];
 
-$stmt=$pdo->prepare("
-  SELECT id FROM delincuente WHERE rut=:rut
-");
+$stmt=$pdo->prepare("SELECT id, delitos FROM delincuente WHERE rut=:rut LIMIT 1");
 $stmt->execute(['rut'=>$datos['rut']]);
-if ($stmt->rowCount()>0) {
-  header("Location: registro_delincuente.php?msg=Ya existe"); exit();
+$existe=$stmt->fetch();
+
+if ($existe) {
+  $existentes = array_filter(array_map('trim', explode(',', $existe['delitos'])));
+  $nuevos = isset($_POST['delitos']) ? array_map('trim', $_POST['delitos']) : [];
+  $datos['delitos'] = implode(',', array_unique(array_merge($existentes, $nuevos)));
+  $datos['id'] = $existe['id'];
+
+  $sql="UPDATE delincuente SET
+          apellidos_nombres=:nombre,
+          apodo=:apodo,
+          domicilio=:domicilio,
+          ultimo_lugar_visto=:ultimo_lugar,
+          fono_fijo=:fono,
+          celular=:celular,
+          email=:email,
+          fecha_nacimiento=:fecha_nacimiento,
+          delitos=:delitos,
+          estado=:estado,
+          latitud=:latitud,
+          longitud=:longitud
+        WHERE id=:id";
+  $stmtUp=$pdo->prepare($sql);
+  if ($stmtUp->execute($datos)) {
+    header("Location: registro_delincuente.php?msg=Actualizado"); exit();
+  } else {
+    header("Location: registro_delincuente.php?msg=Error"); exit();
+  }
 }
 
 $sql="INSERT INTO delincuente

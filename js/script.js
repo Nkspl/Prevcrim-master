@@ -82,4 +82,33 @@ document.addEventListener("DOMContentLoaded", () => {
       input.setCustomValidity("");
     });
   }
+
+  /**
+   * Autocompletar datos del delincuente si el RUT ya existe
+   */
+  const formRegistro = document.querySelector('form[action="process_registro_delincuente.php"]');
+  if (formRegistro) {
+    const rutField = document.getElementById('rut');
+    const nombreField = document.getElementById('nombre');
+    const apodoField = document.getElementById('apodo');
+    const fechaField = document.getElementById('fecha_nacimiento');
+
+    if (rutField) {
+      rutField.addEventListener('blur', () => {
+        const rut = rutField.value.trim();
+        if (!rut) return;
+
+        fetch(`/api/get_delincuente_by_rut.php?rut=${encodeURIComponent(rut)}`)
+          .then(r => r.ok ? r.json() : {})
+          .then(data => {
+            if (data && data.apellidos_nombres) {
+              if (nombreField) nombreField.value = data.apellidos_nombres;
+              if (apodoField) apodoField.value = data.apodo || '';
+              if (fechaField) fechaField.value = data.fecha_nacimiento || '';
+            }
+          })
+          .catch(() => { /* ignorar errores */ });
+      });
+    }
+  }
 });
