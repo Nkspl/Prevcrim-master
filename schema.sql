@@ -50,6 +50,17 @@ CREATE TABLE IF NOT EXISTS delincuente (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS tipo_delito (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL UNIQUE,
+  descripcion TEXT
+);
+
+INSERT INTO tipo_delito (nombre, descripcion) VALUES
+  ('Robo', 'Hurto o sustracción de bienes ajenos'),
+  ('Asalto', 'Ataque violento contra personas o propiedades'),
+  ('Homicidio', 'Crimen que resulta en la muerte de una persona');
+
 CREATE TABLE IF NOT EXISTS delito (
   id INT AUTO_INCREMENT PRIMARY KEY,
   codigo VARCHAR(50) NOT NULL UNIQUE,
@@ -58,8 +69,16 @@ CREATE TABLE IF NOT EXISTS delito (
   comuna VARCHAR(100),
   sector VARCHAR(100),
   fecha DATE,
+  latitud DECIMAL(10,7) DEFAULT NULL,
+  longitud DECIMAL(10,7) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE delito
+  ADD COLUMN tipo_id INT DEFAULT NULL,
+  ADD COLUMN delincuente_id INT DEFAULT NULL,
+  ADD FOREIGN KEY (tipo_id) REFERENCES tipo_delito(id) ON DELETE SET NULL,
+  ADD FOREIGN KEY (delincuente_id) REFERENCES delincuente(id) ON DELETE SET NULL;
 
 CREATE TABLE IF NOT EXISTS operador (
   id INT AUTO_INCREMENT PRIMARY KEY,

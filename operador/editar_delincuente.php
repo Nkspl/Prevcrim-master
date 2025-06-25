@@ -7,6 +7,10 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'operador') {
 
 require_once '../config.php';
 
+// Tipos de delito
+$stmtTipos = $pdo->query("SELECT nombre FROM tipo_delito ORDER BY nombre");
+$tiposDelito = $stmtTipos->fetchAll();
+
 $id = $_GET['id'] ?? null;
 if (!$id) {
     echo "ID no válido.";
@@ -17,6 +21,8 @@ if (!$id) {
 $stmt = $pdo->prepare("SELECT * FROM delincuente WHERE id = ?");
 $stmt->execute([$id]);
 $delincuente = $stmt->fetch();
+
+$selectedDelitos = array_filter(array_map('trim', explode(',', $delincuente['delitos'])));
 
 if (!$delincuente) {
     echo "Delincuente no encontrado.";
@@ -69,7 +75,13 @@ if (!$delincuente) {
             </div>
             <div class="form-group">
                 <label for="delitos">Delitos:</label>
-                <textarea id="delitos" name="delitos"><?= htmlspecialchars($delincuente['delitos']) ?></textarea>
+                <select id="delitos" name="delitos[]" multiple>
+                    <?php foreach ($tiposDelito as $t): ?>
+                        <option value="<?= htmlspecialchars($t['nombre']) ?>" <?= in_array($t['nombre'], $selectedDelitos) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($t['nombre']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div class="form-group">
                 <label for="estado">Estado:</label>

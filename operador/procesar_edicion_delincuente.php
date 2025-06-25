@@ -34,7 +34,7 @@ $stmt->execute([
     'celular' => $_POST['celular'],
     'email' => $_POST['email'],
     'fecha_nacimiento' => $_POST['fecha_nacimiento'],
-    'delitos' => $_POST['delitos'],
+    'delitos' => isset($_POST['delitos']) ? implode(',', $_POST['delitos']) : '',
     'estado' => $_POST['estado'],
     'latitud' => $_POST['latitud'],
     'longitud' => $_POST['longitud'],
