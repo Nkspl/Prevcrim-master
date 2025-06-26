@@ -24,6 +24,7 @@ $datos = [
   'fono'            => trim($_POST['fono']),
   'celular'         => trim($_POST['celular']),
   'email'           => trim($_POST['email']),
+  'imagen'          => null,
   'fecha_nacimiento'=> $_POST['fecha_nacimiento'],
   'delitos'         => isset($_POST['delitos']) ? implode(',', $_POST['delitos']) : '',
   'estado'          => $_POST['estado'],
@@ -31,14 +32,27 @@ $datos = [
   'longitud'        => trim($_POST['longitud']),
 ];
 
+// Procesar la imagen subida
+if (!empty($_FILES['imagen']['name'])) {
+  $dir = __DIR__ . '/../img/delincuentes/';
+  if (!is_dir($dir)) {
+    mkdir($dir, 0755, true);
+  }
+  $ext = pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION);
+  $nombreArchivo = uniqid('delinc_', true) . '.' . $ext;
+  if (move_uploaded_file($_FILES['imagen']['tmp_name'], $dir . $nombreArchivo)) {
+    $datos['imagen'] = 'img/delincuentes/' . $nombreArchivo;
+  }
+}
+
 
 $sql="INSERT INTO delincuente
     (rut,apellidos_nombres,apodo,domicilio,ultimo_lugar_visto,
-     fono_fijo,celular,email,fecha_nacimiento,delitos,estado,
+     fono_fijo,celular,email,imagen,fecha_nacimiento,delitos,estado,
      latitud,longitud)
   VALUES
     (:rut,:nombre,:apodo,:domicilio,:ultimo_lugar,
-     :fono,:celular,:email,:fecha_nacimiento,:delitos,:estado,
+     :fono,:celular,:email,:imagen,:fecha_nacimiento,:delitos,:estado,
      :latitud,:longitud)
 ";
 $insert=$pdo->prepare($sql);

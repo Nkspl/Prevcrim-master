@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'operador') {
+if (!isset($_SESSION['rol']) || !in_array($_SESSION['rol'], ['admin','jefe_zona','operador'])) {
     header('Location: /login.php');
     exit;
 }
@@ -13,7 +13,7 @@ $lista = $pdo->query("SELECT DISTINCT rut, apellidos_nombres FROM delincuente OR
 $rut = $_GET['rut'] ?? '';
 $historial = [];
 if ($rut) {
-    $stmt = $pdo->prepare("SELECT ultimo_lugar_visto, latitud, longitud, created_at AS fecha FROM delincuente WHERE rut = ? ORDER BY created_at DESC");
+    $stmt = $pdo->prepare("SELECT imagen,rut,apellidos_nombres,apodo,domicilio,fono_fijo,celular,email,fecha_nacimiento,delitos,estado,ultimo_lugar_visto,latitud,longitud,created_at AS fecha FROM delincuente WHERE rut = ? ORDER BY created_at DESC");
     $stmt->execute([$rut]);
     $historial = $stmt->fetchAll();
 }
@@ -38,6 +38,17 @@ if ($rut) {
         <thead>
           <tr>
             <th>Fecha</th>
+            <th>Imagen</th>
+            <th>RUT</th>
+            <th>Nombre</th>
+            <th>Apodo</th>
+            <th>Domicilio</th>
+            <th>Fono</th>
+            <th>Celular</th>
+            <th>Email</th>
+            <th>Fecha Nac.</th>
+            <th>Delitos</th>
+            <th>Estado</th>
             <th>Último Lugar Visto</th>
             <th>Latitud</th>
             <th>Longitud</th>
@@ -47,6 +58,17 @@ if ($rut) {
           <?php foreach ($historial as $h): ?>
             <tr>
               <td><?= htmlspecialchars($h['fecha']) ?></td>
+              <td><?php if ($h['imagen']): ?><img src="/<?= htmlspecialchars($h['imagen']) ?>" style="width:50px;"><?php endif; ?></td>
+              <td><?= htmlspecialchars($h['rut']) ?></td>
+              <td><?= htmlspecialchars($h['apellidos_nombres']) ?></td>
+              <td><?= htmlspecialchars($h['apodo']) ?></td>
+              <td><?= htmlspecialchars($h['domicilio']) ?></td>
+              <td><?= htmlspecialchars($h['fono_fijo']) ?></td>
+              <td><?= htmlspecialchars($h['celular']) ?></td>
+              <td><?= htmlspecialchars($h['email']) ?></td>
+              <td><?= htmlspecialchars($h['fecha_nacimiento']) ?></td>
+              <td><?= htmlspecialchars($h['delitos']) ?></td>
+              <td><?= htmlspecialchars($h['estado']) ?></td>
               <td><?= htmlspecialchars($h['ultimo_lugar_visto']) ?></td>
               <td><?= htmlspecialchars($h['latitud']) ?></td>
               <td><?= htmlspecialchars($h['longitud']) ?></td>

@@ -34,8 +34,9 @@ if (!$delincuente) {
 <div class="wrapper">
     <div class="content">
         <h2>Editar Delincuente</h2>
-        <form action="procesar_edicion_delincuente.php" method="post">
+        <form action="procesar_edicion_delincuente.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?= htmlspecialchars($delincuente['id']) ?>">
+            <input type="hidden" name="imagen_actual" value="<?= htmlspecialchars($delincuente['imagen']) ?>">
 
             <div class="form-group">
                 <label for="rut">RUT:</label>
@@ -68,6 +69,13 @@ if (!$delincuente) {
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($delincuente['email']) ?>">
+            </div>
+            <div class="form-group">
+                <label for="imagen">Foto (opcional):</label>
+                <input type="file" id="imagen" name="imagen" accept="image/*">
+                <?php if ($delincuente['imagen']): ?>
+                  <br><img src="/<?= htmlspecialchars($delincuente['imagen']) ?>" style="max-width:150px;">
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="fecha_nacimiento">Fecha de Nacimiento:</label>

@@ -16,7 +16,7 @@ $tiposDelito = $stmtTipos->fetchAll();
   <div class="content">
     <h2>Registro de Delincuentes</h2>
     <?php if (isset($_GET['msg'])) echo "<p class='msg'>" . htmlspecialchars($_GET['msg']) . "</p>"; ?>
-    <form action="process_registro_delincuente.php" method="post">
+    <form action="process_registro_delincuente.php" method="post" enctype="multipart/form-data">
       <div class="form-group">
         <label for="rut">RUT:</label>
         <input id="rut" name="rut" required>
@@ -48,6 +48,10 @@ $tiposDelito = $stmtTipos->fetchAll();
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email">
+      </div>
+      <div class="form-group">
+        <label for="imagen">Foto (opcional):</label>
+        <input type="file" id="imagen" name="imagen" accept="image/*">
       </div>
       <div class="form-group">
         <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
