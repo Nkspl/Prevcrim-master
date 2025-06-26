@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS delincuente (
   fono_fijo VARCHAR(20),
   celular VARCHAR(20),
   email VARCHAR(100),
+  imagen VARCHAR(255),
   fecha_nacimiento DATE,
   delitos TEXT,
   estado ENUM('P','L','A') NOT NULL,

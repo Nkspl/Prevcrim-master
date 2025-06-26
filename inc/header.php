@@ -64,10 +64,10 @@
     <button onclick="location.href='/operador/listado_delincuentes.php';">
       <i class="fa-solid fa-user-group"></i> Delincuentes
     </button>
-    <button onclick="location.href='/operador/historial_delincuente.php';">
-      <i class="fa-solid fa-book"></i> Historial
-    </button>
   <?php endif; ?>
+  <button onclick="location.href='/operador/historial_delincuente.php';">
+    <i class="fa-solid fa-book"></i> Historial
+  </button>
   <button onclick="location.href='/reportes.php';">
     <i class="fa-solid fa-chart-simple"></i> Reportes
   </button>

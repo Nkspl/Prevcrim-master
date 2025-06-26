@@ -7,6 +7,19 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'operador') {
 
 require_once '../config.php';
 
+$imagen = $_POST['imagen_actual'] ?? null;
+if (!empty($_FILES['imagen']['name'])) {
+    $dir = __DIR__ . '/../img/delincuentes/';
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+    $ext = pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION);
+    $nombreArchivo = uniqid('delinc_', true) . '.' . $ext;
+    if (move_uploaded_file($_FILES['imagen']['tmp_name'], $dir . $nombreArchivo)) {
+        $imagen = 'img/delincuentes/' . $nombreArchivo;
+    }
+}
+
 $sql = "UPDATE delincuente SET
             rut = :rut,
             apellidos_nombres = :nombre,
@@ -16,6 +29,7 @@ $sql = "UPDATE delincuente SET
             fono_fijo = :fono,
             celular = :celular,
             email = :email,
+            imagen = :imagen,
             fecha_nacimiento = :fecha_nacimiento,
             delitos = :delitos,
             estado = :estado,
@@ -33,6 +47,7 @@ $stmt->execute([
     'fono' => $_POST['fono'],
     'celular' => $_POST['celular'],
     'email' => $_POST['email'],
+    'imagen' => $imagen,
     'fecha_nacimiento' => $_POST['fecha_nacimiento'],
     'delitos' => isset($_POST['delitos']) ? implode(',', $_POST['delitos']) : '',
     'estado' => $_POST['estado'],
