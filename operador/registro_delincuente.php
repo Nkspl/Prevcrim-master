@@ -94,6 +94,7 @@ $tiposDelito = $stmtTipos->fetchAll();
     function initMap() {
       const latInput = document.getElementById("latitud");
       const lngInput = document.getElementById("longitud");
+      const addressInput = document.getElementById("ultimo_lugar");
 
       const initialLat = parseFloat(latInput.value) || -33.4489;
       const initialLng = parseFloat(lngInput.value) || -70.6693;
@@ -108,10 +109,47 @@ $tiposDelito = $stmtTipos->fetchAll();
         center: initialPosition,
       });
 
-      let marker = new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: initialPosition,
         map: map,
         draggable: true,
+      });
+
+      const geocoder = new google.maps.Geocoder();
+      const autocomplete = new google.maps.places.Autocomplete(addressInput);
+
+      function updatePosition(location) {
+        const lat = location.lat();
+        const lng = location.lng();
+        map.setCenter(location);
+        marker.setPosition(location);
+        latInput.value = lat.toFixed(6);
+        lngInput.value = lng.toFixed(6);
+      }
+
+      function geocodeAddress(value) {
+        if (!value) return;
+        geocoder.geocode({ address: value }, (results, status) => {
+          if (status === "OK" && results[0]) {
+            updatePosition(results[0].geometry.location);
+          }
+        });
+      }
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place.geometry) {
+          updatePosition(place.geometry.location);
+        } else {
+          geocodeAddress(addressInput.value);
+        }
+      });
+
+      addressInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          geocodeAddress(addressInput.value);
+        }
       });
 
       map.addListener("click", function(e) {
@@ -133,7 +171,7 @@ $tiposDelito = $stmtTipos->fetchAll();
   </script>
 
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBS9ZZ_-SfCP-HnAOJcRRUVDJO5TqBs2gg&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBS9ZZ_-SfCP-HnAOJcRRUVDJO5TqBs2gg&callback=initMap&libraries=places">
   </script>
 
   <?php include('../inc/footer.php'); ?>
