@@ -13,19 +13,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!validarRut($rut)) {
     $error = "RUT inválido";
   } else {
-    $nombre = trim($_POST['nombre']);
-    $rol = $_POST['rol'];
-    $fh = $_POST['fecha_habilitacion'];
-    $pass = trim($_POST['password']);
-    $hash = password_hash($pass, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO usuario(rut,nombre,password,rol,institucion_id,fecha_habilitacion)
-            VALUES(:rut,:n,:pass,:rol,:iid,:fh)";
-    $st = $pdo->prepare($sql);
-    if ($st->execute(['rut'=>$rut,'n'=>$nombre,'pass'=>$hash,'rol'=>$rol,'iid'=>$iid,'fh'=>$fh])) {
-      header("Location: gestion_usuarios.php");
-      exit();
+    // Verificar que no exista el usuario
+    $chk = $pdo->prepare("SELECT id FROM usuario WHERE rut=:rut LIMIT 1");
+    $chk->execute(['rut'=>$rut]);
+    if ($chk->fetch()) {
+      $error = "RUT ya registrado";
     } else {
-      $error = "Error al crear usuario";
+      $nombre = trim($_POST['nombre']);
+      $rol = $_POST['rol'];
+      $fh = $_POST['fecha_habilitacion'];
+      $pass = trim($_POST['password']);
+      $hash = password_hash($pass, PASSWORD_DEFAULT);
+      $sql = "INSERT INTO usuario(rut,nombre,password,rol,institucion_id,fecha_habilitacion)
+              VALUES(:rut,:n,:pass,:rol,:iid,:fh)";
+      $st = $pdo->prepare($sql);
+      if ($st->execute(['rut'=>$rut,'n'=>$nombre,'pass'=>$hash,'rol'=>$rol,'iid'=>$iid,'fh'=>$fh])) {
+        header("Location: gestion_usuarios.php");
+        exit();
+      } else {
+        $error = "Error al crear usuario";
+      }
     }
   }
 }

@@ -9,12 +9,19 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
   $n=trim($_POST['nombre']);
   $c=trim($_POST['codigo']);
   $s=intval($_POST['num_sectores']);
-  $q="INSERT INTO institucion(nombre,codigo,num_sectores)
-      VALUES(:n,:c,:s)";
-  $st=$pdo->prepare($q);
-  if ($st->execute(['n'=>$n,'c'=>$c,'s'=>$s])) {
-    header("Location: gestion_instituciones.php"); exit();
-  } else { $error="Error al insertar."; }
+  // Comprobar que no exista una institución con el mismo código
+  $chk=$pdo->prepare("SELECT id FROM institucion WHERE codigo=:c LIMIT 1");
+  $chk->execute(['c'=>$c]);
+  if ($chk->fetch()) {
+    $error="Código ya registrado";
+  } else {
+    $q="INSERT INTO institucion(nombre,codigo,num_sectores)
+        VALUES(:n,:c,:s)";
+    $st=$pdo->prepare($q);
+    if ($st->execute(['n'=>$n,'c'=>$c,'s'=>$s])) {
+      header("Location: gestion_instituciones.php"); exit();
+    } else { $error="Error al insertar."; }
+  }
 }
 ?>
 <?php include('../inc/header.php'); ?>

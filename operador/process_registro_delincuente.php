@@ -15,6 +15,12 @@ $rut = trim($_POST['rut']);
 if (!validarRut($rut)) {
   header("Location: registro_delincuente.php?msg=RUT inválido"); exit();
 }
+// Verificar si ya existe un delincuente con ese RUT
+$check=$pdo->prepare("SELECT id FROM delincuente WHERE rut=:rut LIMIT 1");
+$check->execute(['rut'=>$rut]);
+if ($check->fetch()) {
+  header("Location: registro_delincuente.php?msg=RUT ya registrado"); exit();
+}
 $datos = [
   'rut'             => $rut,
   'nombre'          => trim($_POST['nombre']),
