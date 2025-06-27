@@ -28,8 +28,9 @@ $iid=$_SESSION['institucion_id'];
           <td><?php echo htmlspecialchars($s['descripcion']);?></td>
           <td>
             <button onclick="location.href='editar_sector.php?id=<?php echo $s['id'];?>'">Editar</button>
-            <button onclick="if(confirm('¿Seguro?')) location.href=
-              'eliminar_sector.php?id=<?php echo $s['id'];?>'">Eliminar</button>
+            <?php if (!empty($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
+            <button onclick="if(confirm('¿Seguro?')) location.href='eliminar_sector.php?id=<?php echo $s['id'];?>'">Eliminar</button>
+            <?php endif; ?>
           </td>
         </tr>
         <?php endwhile;?>

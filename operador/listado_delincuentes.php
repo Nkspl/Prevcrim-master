@@ -113,10 +113,12 @@ $delincuentes = $stmt->fetchAll();
               <a href="editar_delincuente.php?id=<?= htmlspecialchars($row['id']) ?>">
                 <button>Editar</button>
               </a>
-              <form method="POST" action="eliminar_delincuente.php" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este registro?');">
-                <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
-                <button type="submit" style="background-color:red; color:white;">Eliminar</button>
-              </form>
+              <?php if (!empty($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
+                <form method="POST" action="eliminar_delincuente.php" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este registro?');">
+                  <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+                  <button type="submit" style="background-color:red; color:white;">Eliminar</button>
+                </form>
+              <?php endif; ?>
             </td>
           </tr>
         <?php endforeach; ?>
