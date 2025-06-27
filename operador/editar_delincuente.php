@@ -7,8 +7,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'operador') {
 
 require_once '../config.php';
 
-// Tipos de delito
-$stmtTipos = $pdo->query("SELECT nombre FROM tipo_delito ORDER BY nombre");
+$stmtTipos = $pdo->query("SELECT nombre, descripcion FROM tipo_delito ORDER BY nombre");
 $tiposDelito = $stmtTipos->fetchAll();
 
 $id = $_GET['id'] ?? null;
@@ -86,7 +85,7 @@ if (!$delincuente) {
                 <select id="delitos" name="delitos[]" multiple>
                     <?php foreach ($tiposDelito as $t): ?>
                         <option value="<?= htmlspecialchars($t['nombre']) ?>" <?= in_array($t['nombre'], $selectedDelitos) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($t['nombre']) ?>
+                            <?= htmlspecialchars($t['nombre'] . ' - ' . $t['descripcion']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

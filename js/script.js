@@ -111,4 +111,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   }
+
+  // Autocompletar lat/lon al seleccionar comuna
+  const comunaSelect = document.getElementById('comuna');
+  const latField = document.getElementById('latitud');
+  const lngField = document.getElementById('longitud');
+  if (comunaSelect && latField && lngField) {
+    comunaSelect.addEventListener('change', () => {
+      const opt = comunaSelect.selectedOptions[0];
+      if (opt) {
+        latField.value = opt.dataset.lat || '';
+        lngField.value = opt.dataset.lng || '';
+      }
+    });
+  }
 });
