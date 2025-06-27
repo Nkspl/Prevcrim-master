@@ -64,6 +64,9 @@
     <button onclick="location.href='/operador/listado_delincuentes.php';">
       <i class="fa-solid fa-user-group"></i> Delincuentes
     </button>
+    <button onclick="location.href='/operador/registro_control.php';">
+      <i class="fa-solid fa-clipboard"></i> Registrar Control
+    </button>
   <?php endif; ?>
   <button onclick="location.href='/operador/historial_delincuente.php';">
     <i class="fa-solid fa-book"></i> Historial
