@@ -38,6 +38,13 @@ require_once '../config.php';
           <input id="motivo_desplazamiento" name="motivo_desplazamiento">
         </div>
         <div class="form-group">
+          <label for="observacion">Observación:</label>
+          <textarea id="observacion" name="observacion"></textarea>
+        </div>
+      </div>
+
+      <div id="seccion-ubicacion" class="tipo-section" style="display:none;">
+        <div class="form-group">
           <label for="ubicacion">Ubicación:</label>
           <input id="ubicacion" name="ubicacion">
         </div>
@@ -48,10 +55,6 @@ require_once '../config.php';
         <div class="form-group">
           <label for="longitud">Longitud:</label>
           <input id="longitud" name="longitud">
-        </div>
-        <div class="form-group">
-          <label for="observacion">Observación:</label>
-          <textarea id="observacion" name="observacion"></textarea>
         </div>
       </div>
 
@@ -114,9 +117,33 @@ require_once '../config.php';
   document.getElementById('tipo').addEventListener('change', function() {
     document.querySelectorAll('.tipo-section').forEach(s => s.style.display = 'none');
     const val = this.value;
+    if (val) document.getElementById('seccion-ubicacion').style.display = 'block';
     if (val === 'identidad') document.getElementById('seccion-identidad').style.display = 'block';
     else if (val === 'vehicular') document.getElementById('seccion-vehicular').style.display = 'block';
     else if (val === 'armas_drogas') document.getElementById('seccion-armas').style.display = 'block';
     else if (val === 'transito') document.getElementById('seccion-transito').style.display = 'block';
   });
+
+  const ubicacionInput = document.getElementById('ubicacion');
+  const latInput = document.getElementById('latitud');
+  const lngInput = document.getElementById('longitud');
+
+  function geocodeAddress() {
+    const address = ubicacionInput.value.trim();
+    if (!address) return;
+    fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(address), {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'prevcrim-app' }
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data && data[0]) {
+        latInput.value = parseFloat(data[0].lat).toFixed(6);
+        lngInput.value = parseFloat(data[0].lon).toFixed(6);
+      }
+    })
+    .catch(e => console.error('Geocoding error', e));
+  }
+
+  ubicacionInput.addEventListener('change', geocodeAddress);
+  ubicacionInput.addEventListener('blur', geocodeAddress);
 </script>
