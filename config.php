@@ -1,10 +1,20 @@
 <?php
 // config.php
-$host   = 'localhost';
-$db     = 'sipc2';
-$user   = 'root';
-$pass   = 'Hola.,123';
-$charset= 'utf8mb4';
+$charset = 'utf8mb4';
+
+function getEnvOrMessage($var, $message) {
+    $val = getenv($var);
+    if ($val === false || $val === '') {
+        trigger_error($message, E_USER_WARNING);
+        return '';
+    }
+    return $val;
+}
+
+$host = getEnvOrMessage('DB_HOST', 'Environment variable DB_HOST is missing.');
+$db   = getEnvOrMessage('DB_NAME', 'Environment variable DB_NAME is missing.');
+$user = getEnvOrMessage('DB_USER', 'Environment variable DB_USER is missing.');
+$pass = getEnvOrMessage('DB_PASS', 'Environment variable DB_PASS is missing.');
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
