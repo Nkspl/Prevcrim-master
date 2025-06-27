@@ -7,9 +7,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'operador') {
 }
 require_once '../config.php';
 
-// Obtener tipos de delito
-$stmtTipos = $pdo->query("SELECT id, nombre FROM tipo_delito ORDER BY nombre");
+// Obtener tipos de delito con su descripción
+$stmtTipos = $pdo->query("SELECT id, nombre, descripcion FROM tipo_delito ORDER BY nombre");
 $tipos = $stmtTipos->fetchAll();
+
+// Obtener comunas para selector
+$stmtComunas = $pdo->query("SELECT nombre, latitud, longitud FROM comuna ORDER BY nombre");
+$comunas = $stmtComunas->fetchAll();
 
 // Obtener delincuentes existentes para asociar (opcional)
 $stmtDelincuentes = $pdo->query("SELECT id, rut, apellidos_nombres FROM delincuente ORDER BY apellidos_nombres");
@@ -31,7 +35,14 @@ $delincuentes = $stmtDelincuentes->fetchAll();
       </div>
       <div class="form-group">
         <label for="comuna">Comuna:</label>
-        <input id="comuna" name="comuna" required>
+        <select id="comuna" name="comuna" required>
+          <option value="">-- Seleccione --</option>
+          <?php foreach ($comunas as $c): ?>
+            <option value="<?= htmlspecialchars($c['nombre']) ?>" data-lat="<?= htmlspecialchars($c['latitud']) ?>" data-lng="<?= htmlspecialchars($c['longitud']) ?>">
+              <?= htmlspecialchars($c['nombre']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
       </div>
       <div class="form-group">
         <label for="sector">Sector:</label>
@@ -55,7 +66,7 @@ $delincuentes = $stmtDelincuentes->fetchAll();
           <option value="">-- Seleccione --</option>
           <?php foreach ($tipos as $t): ?>
             <option value="<?= htmlspecialchars($t['id']) ?>">
-              <?= htmlspecialchars($t['nombre']) ?>
+              <?= htmlspecialchars($t['nombre'] . ' - ' . $t['descripcion']) ?>
             </option>
           <?php endforeach; ?>
         </select>

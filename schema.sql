@@ -62,6 +62,18 @@ INSERT INTO tipo_delito (nombre, descripcion) VALUES
   ('Asalto', 'Ataque violento contra personas o propiedades'),
   ('Homicidio', 'Crimen que resulta en la muerte de una persona');
 
+CREATE TABLE IF NOT EXISTS comuna (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL UNIQUE,
+  latitud DECIMAL(10,7) DEFAULT NULL,
+  longitud DECIMAL(10,7) DEFAULT NULL
+);
+
+INSERT INTO comuna (nombre, latitud, longitud) VALUES
+  ('Santiago', -33.4489, -70.6693),
+  ('Providencia', -33.4263, -70.6159),
+  ('La Florida', -33.5235, -70.6095);
+
 CREATE TABLE IF NOT EXISTS delito (
   id INT AUTO_INCREMENT PRIMARY KEY,
   codigo VARCHAR(50) NOT NULL UNIQUE,

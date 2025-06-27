@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'operador') {
 require_once '../config.php';
 
 // Obtener tipos de delitos desde la base de datos
-$stmtTipos = $pdo->query("SELECT nombre FROM tipo_delito ORDER BY nombre");
+$stmtTipos = $pdo->query("SELECT nombre, descripcion FROM tipo_delito ORDER BY nombre");
 $tiposDelito = $stmtTipos->fetchAll();
 ?>
 <?php include('../inc/header.php'); ?>
@@ -62,7 +62,7 @@ $tiposDelito = $stmtTipos->fetchAll();
         <select id="delitos" name="delitos[]" multiple>
           <?php foreach ($tiposDelito as $t): ?>
             <option value="<?= htmlspecialchars($t['nombre']) ?>">
-              <?= htmlspecialchars($t['nombre']) ?>
+              <?= htmlspecialchars($t['nombre'] . ' - ' . $t['descripcion']) ?>
             </option>
           <?php endforeach; ?>
         </select>
