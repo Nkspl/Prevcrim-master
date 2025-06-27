@@ -81,21 +81,11 @@ ALTER TABLE delito
   ADD FOREIGN KEY (tipo_id) REFERENCES tipo_delito(id) ON DELETE SET NULL,
   ADD FOREIGN KEY (delincuente_id) REFERENCES delincuente(id) ON DELETE SET NULL;
 
-CREATE TABLE IF NOT EXISTS operador (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  rut VARCHAR(12) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL,
-  apellidos_nombres VARCHAR(150) NOT NULL,
-  institucion_id INT DEFAULT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (institucion_id) REFERENCES institucion(id) ON DELETE SET NULL
-);
-
 # New table for police controls
 
 CREATE TABLE IF NOT EXISTS control_policial (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  operador_id INT DEFAULT NULL,
+  usuario_id INT DEFAULT NULL,
   tipo ENUM('identidad','vehicular','armas_drogas','transito') NOT NULL,
   rut VARCHAR(12),
   nombre VARCHAR(150),
@@ -115,5 +105,5 @@ CREATE TABLE IF NOT EXISTS control_policial (
   test_alcoholemia VARCHAR(100),
   doc_vehicular TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (operador_id) REFERENCES operador(id) ON DELETE SET NULL
+  FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE SET NULL
 );

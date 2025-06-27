@@ -20,7 +20,7 @@ if (!$tipo) {
 }
 
 $data = [
-  'operador_id' => $_SESSION['user_id'],
+  'usuario_id' => $_SESSION['user_id'],
   'tipo' => $tipo,
   'rut' => trim($_POST['rut'] ?? ''),
   'nombre' => trim($_POST['nombre'] ?? ''),
@@ -42,11 +42,11 @@ $data = [
 ];
 
 $sql = "INSERT INTO control_policial
-          (operador_id,tipo,rut,nombre,motivo_desplazamiento,ubicacion,latitud,longitud,observacion,
+          (usuario_id,tipo,rut,nombre,motivo_desplazamiento,ubicacion,latitud,longitud,observacion,
            licencia_conducir,padron_vehiculo,revision_seguro,rut_conductor,nombre_conductor,
            pertenencias,permisos_arma,revision_mochila,test_alcoholemia,doc_vehicular)
         VALUES
-          (:operador_id,:tipo,:rut,:nombre,:motivo_desplazamiento,:ubicacion,:latitud,:longitud,:observacion,
+          (:usuario_id,:tipo,:rut,:nombre,:motivo_desplazamiento,:ubicacion,:latitud,:longitud,:observacion,
            :licencia_conducir,:padron_vehiculo,:revision_seguro,:rut_conductor,:nombre_conductor,
            :pertenencias,:permisos_arma,:revision_mochila,:test_alcoholemia,:doc_vehicular)";
 $stmt = $pdo->prepare($sql);
