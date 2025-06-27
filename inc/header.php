@@ -67,6 +67,9 @@
     <button onclick="location.href='/operador/registro_control.php';">
       <i class="fa-solid fa-clipboard"></i> Registrar Control
     </button>
+    <button onclick="location.href='/operador/registro_delito.php';">
+      <i class="fa-solid fa-gavel"></i> Registrar Delito
+    </button>
   <?php endif; ?>
   <button onclick="location.href='/operador/historial_delincuente.php';">
     <i class="fa-solid fa-book"></i> Historial
