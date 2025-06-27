@@ -90,3 +90,30 @@ CREATE TABLE IF NOT EXISTS operador (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (institucion_id) REFERENCES institucion(id) ON DELETE SET NULL
 );
+
+# New table for police controls
+
+CREATE TABLE IF NOT EXISTS control_policial (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  operador_id INT DEFAULT NULL,
+  tipo ENUM('identidad','vehicular','armas_drogas','transito') NOT NULL,
+  rut VARCHAR(12),
+  nombre VARCHAR(150),
+  motivo_desplazamiento TEXT,
+  ubicacion VARCHAR(200),
+  latitud DECIMAL(10,7) DEFAULT NULL,
+  longitud DECIMAL(10,7) DEFAULT NULL,
+  observacion TEXT,
+  licencia_conducir VARCHAR(100),
+  padron_vehiculo VARCHAR(100),
+  revision_seguro VARCHAR(100),
+  rut_conductor VARCHAR(12),
+  nombre_conductor VARCHAR(150),
+  pertenencias TEXT,
+  permisos_arma TEXT,
+  revision_mochila TEXT,
+  test_alcoholemia VARCHAR(100),
+  doc_vehicular TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (operador_id) REFERENCES operador(id) ON DELETE SET NULL
+);
