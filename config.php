@@ -11,12 +11,19 @@ function getEnvOrMessage($var, $message) {
     return $val;
 }
 
-$host = getEnvOrMessage('DB_HOST', 'Environment variable DB_HOST is missing.');
-$db   = getEnvOrMessage('DB_NAME', 'Environment variable DB_NAME is missing.');
-$user = getEnvOrMessage('DB_USER', 'Environment variable DB_USER is missing.');
-$pass = getEnvOrMessage('DB_PASS', 'Environment variable DB_PASS is missing.');
+$dsnEnv = getenv('DB_DSN');
+if ($dsnEnv) {
+    $dsn  = $dsnEnv;
+    $user = getenv('DB_USER') ?: null;
+    $pass = getenv('DB_PASS') ?: null;
+} else {
+    $host = getEnvOrMessage('DB_HOST', 'Environment variable DB_HOST is missing.');
+    $db   = getEnvOrMessage('DB_NAME', 'Environment variable DB_NAME is missing.');
+    $user = getEnvOrMessage('DB_USER', 'Environment variable DB_USER is missing.');
+    $pass = getEnvOrMessage('DB_PASS', 'Environment variable DB_PASS is missing.');
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+    $dsn  = "mysql:host=$host;dbname=$db;charset=$charset";
+}
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
