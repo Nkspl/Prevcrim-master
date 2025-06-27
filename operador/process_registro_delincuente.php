@@ -38,6 +38,33 @@ $datos = [
   'longitud'        => trim($_POST['longitud']),
 ];
 
+// Validaciones de formato y longitud
+if ($datos['fono'] !== '' && !ctype_digit($datos['fono'])) {
+  header("Location: registro_delincuente.php?msg=Fono debe ser numérico"); exit();
+}
+if ($datos['celular'] !== '' && !ctype_digit($datos['celular'])) {
+  header("Location: registro_delincuente.php?msg=Celular debe ser numérico"); exit();
+}
+if (!is_numeric($datos['latitud']) || !is_numeric($datos['longitud'])) {
+  header("Location: registro_delincuente.php?msg=Coordenadas inválidas"); exit();
+}
+
+if (mb_strlen($datos['nombre']) > 150) {
+  header("Location: registro_delincuente.php?msg=Nombre muy largo"); exit();
+}
+if (mb_strlen($datos['apodo']) > 50) {
+  header("Location: registro_delincuente.php?msg=Apodo muy largo"); exit();
+}
+if (mb_strlen($datos['domicilio']) > 200) {
+  header("Location: registro_delincuente.php?msg=Domicilio muy largo"); exit();
+}
+if (mb_strlen($datos['ultimo_lugar']) > 200) {
+  header("Location: registro_delincuente.php?msg=Último lugar muy largo"); exit();
+}
+if (mb_strlen($datos['email']) > 100) {
+  header("Location: registro_delincuente.php?msg=Email muy largo"); exit();
+}
+
 // Procesar la imagen subida
 if (!empty($_FILES['imagen']['name'])) {
   $dir = __DIR__ . '/../img/delincuentes/';

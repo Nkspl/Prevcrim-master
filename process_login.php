@@ -14,7 +14,16 @@ if (!validarRut($rut)) {
     header("Location: index.php?error=RUT inválido");
     exit();
 }
+$cleanRut = limpiarRut($rut);
+if (strlen($cleanRut) > 12) {
+    header("Location: index.php?error=RUT demasiado largo");
+    exit();
+}
 $password = $_POST['password'];
+if (strlen($password) > 100) {
+    header("Location: index.php?error=Contraseña demasiado larga");
+    exit();
+}
 
 $sql  = "SELECT * FROM usuario WHERE rut = :rut";
 $stmt = $pdo->prepare($sql);
