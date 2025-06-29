@@ -53,6 +53,9 @@ A small PHPUnit suite is provided covering the login procedure and basic CRUD
 operations on the `usuario` table. The tests use an isolated SQLite database so
 no real data is modified.
 
+Ensure that the PHP SQLite extension is available (on Debian/Ubuntu install the
+`php-sqlite3` package) before running the suite.
+
 Execute the tests with:
 
 ```bash
