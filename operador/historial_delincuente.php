@@ -11,11 +11,21 @@ require_once '../config.php';
 $lista = $pdo->query("SELECT DISTINCT rut, apellidos_nombres FROM delincuente ORDER BY apellidos_nombres")->fetchAll();
 
 $rut = $_GET['rut'] ?? '';
-$historial = [];
+$persona = null;
+$delitos = [];
 if ($rut) {
-    $stmt = $pdo->prepare("SELECT imagen,rut,apellidos_nombres,apodo,domicilio,fono_fijo,celular,email,fecha_nacimiento,delitos,estado,ultimo_lugar_visto,latitud,longitud,created_at AS fecha FROM delincuente WHERE rut = ? ORDER BY created_at DESC");
+    $stmt = $pdo->prepare("SELECT * FROM delincuente WHERE rut = ? LIMIT 1");
     $stmt->execute([$rut]);
-    $historial = $stmt->fetchAll();
+    $persona = $stmt->fetch();
+    if ($persona) {
+        $sql = "SELECT fecha, td.nombre AS tipo, descripcion, comuna, sector, latitud, longitud
+                FROM delito dl
+                LEFT JOIN tipo_delito td ON dl.tipo_id = td.id
+                WHERE dl.delincuente_id = ? ORDER BY fecha DESC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$persona['id']]);
+        $delitos = $stmt->fetchAll();
+    }
 }
 ?>
 <?php include('../inc/header.php'); ?>
@@ -32,67 +42,76 @@ if ($rut) {
       </select>
     </form>
 
-    <?php if ($rut && $historial): ?>
-      <a href="descargar_historial.php?rut=<?= urlencode($rut) ?>">Descargar Reporte</a>
+    <?php if ($rut && $persona): ?>
+      <a href="descargar_historial.php?rut=<?= urlencode($rut) ?>&format=html" target="_blank">Descargar Reporte</a>
+      <h3>Datos Personales</h3>
+      <table>
+        <tbody>
+          <tr><th>Imagen</th><td><?php if ($persona['imagen']): ?><img src="/<?= htmlspecialchars($persona['imagen']) ?>" style="width:50px;"><?php endif; ?></td></tr>
+          <tr><th>RUT</th><td><?= htmlspecialchars($persona['rut']) ?></td></tr>
+          <tr><th>Nombre</th><td><?= htmlspecialchars($persona['apellidos_nombres']) ?></td></tr>
+          <tr><th>Apodo</th><td><?= htmlspecialchars($persona['apodo']) ?></td></tr>
+          <tr><th>Domicilio</th><td><?= htmlspecialchars($persona['domicilio']) ?></td></tr>
+          <tr><th>Fono</th><td><?= htmlspecialchars($persona['fono_fijo']) ?></td></tr>
+          <tr><th>Celular</th><td><?= htmlspecialchars($persona['celular']) ?></td></tr>
+          <tr><th>Email</th><td><?= htmlspecialchars($persona['email']) ?></td></tr>
+          <tr><th>Fecha Nac.</th><td><?= htmlspecialchars($persona['fecha_nacimiento']) ?></td></tr>
+          <tr><th>Delitos</th><td><?= htmlspecialchars($persona['delitos']) ?></td></tr>
+          <tr><th>Estado</th><td><?= htmlspecialchars($persona['estado']) ?></td></tr>
+          <tr><th>Último Lugar Visto</th><td><?= htmlspecialchars($persona['ultimo_lugar_visto']) ?></td></tr>
+          <tr><th>Latitud</th><td><?= htmlspecialchars($persona['latitud']) ?></td></tr>
+          <tr><th>Longitud</th><td><?= htmlspecialchars($persona['longitud']) ?></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Historial de Delitos</h3>
+      <?php if ($delitos): ?>
       <table>
         <thead>
           <tr>
             <th>Fecha</th>
-            <th>Imagen</th>
-            <th>RUT</th>
-            <th>Nombre</th>
-            <th>Apodo</th>
-            <th>Domicilio</th>
-            <th>Fono</th>
-            <th>Celular</th>
-            <th>Email</th>
-            <th>Fecha Nac.</th>
-            <th>Delitos</th>
-            <th>Estado</th>
-            <th>Último Lugar Visto</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Comuna</th>
+            <th>Sector</th>
             <th>Latitud</th>
             <th>Longitud</th>
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($historial as $h): ?>
+          <?php foreach ($delitos as $d): ?>
             <tr>
-              <td><?= htmlspecialchars($h['fecha']) ?></td>
-              <td><?php if ($h['imagen']): ?><img src="/<?= htmlspecialchars($h['imagen']) ?>" style="width:50px;"><?php endif; ?></td>
-              <td><?= htmlspecialchars($h['rut']) ?></td>
-              <td><?= htmlspecialchars($h['apellidos_nombres']) ?></td>
-              <td><?= htmlspecialchars($h['apodo']) ?></td>
-              <td><?= htmlspecialchars($h['domicilio']) ?></td>
-              <td><?= htmlspecialchars($h['fono_fijo']) ?></td>
-              <td><?= htmlspecialchars($h['celular']) ?></td>
-              <td><?= htmlspecialchars($h['email']) ?></td>
-              <td><?= htmlspecialchars($h['fecha_nacimiento']) ?></td>
-              <td><?= htmlspecialchars($h['delitos']) ?></td>
-              <td><?= htmlspecialchars($h['estado']) ?></td>
-              <td><?= htmlspecialchars($h['ultimo_lugar_visto']) ?></td>
-              <td><?= htmlspecialchars($h['latitud']) ?></td>
-              <td><?= htmlspecialchars($h['longitud']) ?></td>
+              <td><?= htmlspecialchars($d['fecha']) ?></td>
+              <td><?= htmlspecialchars($d['tipo']) ?></td>
+              <td><?= htmlspecialchars($d['descripcion']) ?></td>
+              <td><?= htmlspecialchars($d['comuna']) ?></td>
+              <td><?= htmlspecialchars($d['sector']) ?></td>
+              <td><?= htmlspecialchars($d['latitud']) ?></td>
+              <td><?= htmlspecialchars($d['longitud']) ?></td>
             </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
       <div id="map" style="height:400px;margin-top:20px;"></div>
+      <?php else: ?>
+        <p>No hay delitos registrados.</p>
+      <?php endif; ?>
     <?php elseif ($rut): ?>
       <p>No hay registros en el historial para este delincuente.</p>
     <?php endif; ?>
   </div>
   <?php include('../inc/footer.php'); ?>
 </div>
-<?php if ($rut && $historial): ?>
+<?php if ($rut && $persona && $delitos): ?>
 <script>
   function initMap() {
     const map = new google.maps.Map(document.getElementById('map'), { zoom: 6, center: {lat: -33.45, lng: -70.66}});
     const bounds = new google.maps.LatLngBounds();
-    <?php foreach ($historial as $h): ?>
+    <?php foreach ($delitos as $d): ?>
       const marker = new google.maps.Marker({
-        position: {lat: parseFloat('<?= $h['latitud'] ?>'), lng: parseFloat('<?= $h['longitud'] ?>')},
+        position: {lat: parseFloat('<?= $d['latitud'] ?>'), lng: parseFloat('<?= $d['longitud'] ?>')},
         map,
-        title: "Lugar: <?= htmlspecialchars($h['ultimo_lugar_visto'], ENT_QUOTES) ?>"
+        title: "Lugar: <?= htmlspecialchars($d['comuna'], ENT_QUOTES) ?>"
       });
       bounds.extend(marker.getPosition());
     <?php endforeach; ?>
