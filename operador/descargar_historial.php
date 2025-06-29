@@ -17,7 +17,7 @@ $persona = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$persona) {
     exit('RUT inválido');
 }
-$sql = "SELECT fecha, td.nombre AS tipo, descripcion, comuna, sector, latitud, longitud
+$sql = "SELECT fecha, td.nombre AS tipo, dl.descripcion, comuna, sector, latitud, longitud
         FROM delito dl
         LEFT JOIN tipo_delito td ON dl.tipo_id = td.id
         WHERE dl.delincuente_id = ? ORDER BY fecha DESC";
