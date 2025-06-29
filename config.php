@@ -11,24 +11,31 @@ function getEnvOrMessage($var, $message) {
     return $val;
 }
 
+// --- Sección de valores por defecto ---
+$host = getenv('DB_HOST') ?: 'localhost';
+$db   = getenv('DB_NAME') ?: 'sipc2';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASS') ?: 'Hola.,123';
+// ---------------------------------------
+
+// Si tienes una variable DSN completa, la usas; si no, construyes:
 $dsnEnv = getenv('DB_DSN');
 if ($dsnEnv) {
     $dsn  = $dsnEnv;
+    // Si DSN incluye usuario/clave, déjalos nulos para que PDO los ignore
     $user = getenv('DB_USER') ?: null;
     $pass = getenv('DB_PASS') ?: null;
 } else {
-    $host = getEnvOrMessage('DB_HOST', 'Environment variable DB_HOST is missing.');
-    $db   = getEnvOrMessage('DB_NAME', 'Environment variable DB_NAME is missing.');
-    $user = getEnvOrMessage('DB_USER', 'Environment variable DB_USER is missing.');
-    $pass = getEnvOrMessage('DB_PASS', 'Environment variable DB_PASS is missing.');
-
+    // Ya tienes $host, $db, $user, $pass definidos arriba
     $dsn  = "mysql:host=$host;dbname=$db;charset=$charset";
 }
+
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::ATTR_EMULATE_PREPARES   => false,
 ];
+
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
