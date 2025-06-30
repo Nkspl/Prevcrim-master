@@ -38,6 +38,15 @@ $sql = "UPDATE delincuente SET
         WHERE id = :id";
 
 $stmt = $pdo->prepare($sql);
+
+// Validar que el estado sea uno de los permitidos
+$estado = $_POST['estado'];
+$permitidos = ['Preso', 'Libre', 'Orden de arresto'];
+if (!in_array($estado, $permitidos, true)) {
+    header('Location: editar_delincuente.php?id=' . urlencode($_POST['id']) . '&msg=Estado inválido');
+    exit;
+}
+
 $stmt->execute([
     'rut' => $_POST['rut'],
     'nombre' => $_POST['nombre'],
@@ -50,7 +59,7 @@ $stmt->execute([
     'imagen' => $imagen,
     'fecha_nacimiento' => $_POST['fecha_nacimiento'],
     'delitos' => isset($_POST['delitos']) ? implode(',', $_POST['delitos']) : '',
-    'estado' => $_POST['estado'],
+    'estado' => $estado,
     'latitud' => $_POST['latitud'],
     'longitud' => $_POST['longitud'],
     'id' => $_POST['id']

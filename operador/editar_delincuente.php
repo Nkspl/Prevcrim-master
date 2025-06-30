@@ -23,6 +23,9 @@ $delincuente = $stmt->fetch();
 
 $selectedDelitos = array_filter(array_map('trim', explode(',', $delincuente['delitos'])));
 
+// Estado actual guardado en la base de datos
+$estadoActual = $delincuente['estado'] ?? '';
+
 if (!$delincuente) {
     echo "Delincuente no encontrado.";
     exit;
@@ -93,9 +96,9 @@ if (!$delincuente) {
             <div class="form-group">
                 <label for="estado">Estado:</label>
                 <select id="estado" name="estado" required>
-                    <option value="P" <?= $delincuente['estado'] === 'P' ? 'selected' : '' ?>>Preso</option>
-                    <option value="L" <?= $delincuente['estado'] === 'L' ? 'selected' : '' ?>>Libre</option>
-                    <option value="A" <?= $delincuente['estado'] === 'A' ? 'selected' : '' ?>>Orden de Arresto</option>
+                    <option value="Preso" <?= $estadoActual === 'Preso' ? 'selected' : '' ?>>Preso</option>
+                    <option value="Libre" <?= $estadoActual === 'Libre' ? 'selected' : '' ?>>Libre</option>
+                    <option value="Orden de arresto" <?= $estadoActual === 'Orden de arresto' ? 'selected' : '' ?>>Orden de Arresto</option>
                 </select>
             </div>
             <div class="form-group">

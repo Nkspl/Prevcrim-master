@@ -87,15 +87,14 @@ $delincuentes = $stmt->fetchAll();
     $estadoImg = '';
     $estadoTexto = '';
 
-    if ($estado === 'P') {
-      $estadoImg = 'preso.png';
-      $estadoTexto = 'Preso';
-    } elseif ($estado === 'A') {
-      $estadoImg = 'ordenDeArresto.png';
-      $estadoTexto = 'Orden de Arresto';
-    } elseif ($estado === 'L') {
-      $estadoImg = 'libre.png';
-      $estadoTexto = 'Libre';
+    $map = [
+      'Preso' => ['preso.png', 'Preso'],
+      'Orden de arresto' => ['ordenDeArresto.png', 'Orden de Arresto'],
+      'Libre' => ['libre.png', 'Libre'],
+    ];
+
+    if (isset($map[$estado])) {
+      [$estadoImg, $estadoTexto] = $map[$estado];
     }
 
     if ($estadoImg):
