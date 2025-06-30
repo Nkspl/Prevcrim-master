@@ -38,6 +38,12 @@ $datos = [
   'longitud'        => trim($_POST['longitud']),
 ];
 
+// Validar que el estado sea uno de los permitidos
+$permitidos = ['Preso', 'Libre', 'Orden de arresto'];
+if (!in_array($datos['estado'], $permitidos, true)) {
+  header("Location: registro_delincuente.php?msg=Estado inválido"); exit();
+}
+
 // Validaciones de formato y longitud
 if ($datos['fono'] !== '' && !ctype_digit($datos['fono'])) {
   header("Location: registro_delincuente.php?msg=Fono debe ser numérico"); exit();

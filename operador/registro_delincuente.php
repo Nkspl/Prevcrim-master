@@ -70,9 +70,9 @@ $tiposDelito = $stmtTipos->fetchAll();
       <div class="form-group">
         <label for="estado">Estado:</label>
         <select id="estado" name="estado" required>
-          <option value="P">Preso</option>
-          <option value="L">Libre</option>
-          <option value="A">Orden de Arresto</option>
+          <option value="Preso">Preso</option>
+          <option value="Libre">Libre</option>
+          <option value="Orden de arresto">Orden de Arresto</option>
         </select>
       </div>
       <div class="form-group">
