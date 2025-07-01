@@ -22,7 +22,9 @@ if (!empty($_FILES['imagen']['name'])) {
 
 $sql = "UPDATE delincuente SET
             rut = :rut,
-            apellidos_nombres = :nombre,
+            nombres = :nombres,
+            apellidos = :apellidos,
+            apellidos_nombres = :apellidos_nombres,
             apodo = :apodo,
             domicilio = :domicilio,
             ultimo_lugar_visto = :ultimo_lugar,
@@ -49,7 +51,9 @@ if (!in_array($estado, $permitidos, true)) {
 
 $stmt->execute([
     'rut' => $_POST['rut'],
-    'nombre' => $_POST['nombre'],
+    'nombres' => $_POST['nombres'],
+    'apellidos' => $_POST['apellidos'],
+    'apellidos_nombres' => trim($_POST['apellidos']) . ' ' . trim($_POST['nombres']),
     'apodo' => $_POST['apodo'],
     'domicilio' => $_POST['domicilio'],
     'ultimo_lugar' => $_POST['ultimo_lugar'],

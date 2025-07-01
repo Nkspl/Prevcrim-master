@@ -22,8 +22,12 @@ $tiposDelito = $stmtTipos->fetchAll();
         <input id="rut" name="rut" required>
       </div>
       <div class="form-group">
-        <label for="nombre">Apellidos y Nombres:</label>
-        <input id="nombre" name="nombre" required>
+        <label for="apellidos">Apellidos:</label>
+        <input id="apellidos" name="apellidos" required>
+      </div>
+      <div class="form-group">
+        <label for="nombres">Nombres:</label>
+        <input id="nombres" name="nombres" required>
       </div>
       <div class="form-group">
         <label for="apodo">Apodo:</label>
@@ -35,7 +39,7 @@ $tiposDelito = $stmtTipos->fetchAll();
       </div>
       <div class="form-group">
         <label for="ultimo_lugar">Último Lugar Visto:</label>
-        <input id="ultimo_lugar" name="ultimo_lugar" required>
+        <input id="ultimo_lugar" name="ultimo_lugar" placeholder="seleccionalo en el mapa de abajo" required>
       </div>
       <div class="form-group">
         <label for="fono">Fono Fijo:</label>
@@ -129,6 +133,11 @@ $tiposDelito = $stmtTipos->fetchAll();
         marker.setPosition(location);
         latInput.value = lat.toFixed(6);
         lngInput.value = lng.toFixed(6);
+        geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+          if (status === "OK" && results[0]) {
+            addressInput.value = results[0].formatted_address;
+          }
+        });
       }
 
       function geocodeAddress(value) {
@@ -157,19 +166,11 @@ $tiposDelito = $stmtTipos->fetchAll();
       });
 
       map.addListener("click", function(e) {
-        const lat = e.latLng.lat();
-        const lng = e.latLng.lng();
-        latInput.value = lat.toFixed(6);
-        lngInput.value = lng.toFixed(6);
-        marker.setPosition({
-          lat,
-          lng
-        });
+        updatePosition(e.latLng);
       });
 
       marker.addListener("dragend", function(e) {
-        latInput.value = e.latLng.lat().toFixed(6);
-        lngInput.value = e.latLng.lng().toFixed(6);
+        updatePosition(e.latLng);
       });
     }
   </script>
