@@ -20,8 +20,11 @@ if ($tipo !== '') {
 }
 
 if ($buscar !== '') {
-    $sql .= " AND (rut LIKE :b OR nombre LIKE :b)";
-    $params['b'] = '%' . $buscar . '%';
+    // MySQL PDO no permite reutilizar el mismo nombre de placeholder,
+    // por lo que usamos dos placeholders distintos
+    $sql .= " AND (rut LIKE :buscar_rut OR nombre LIKE :buscar_nom)";
+    $params['buscar_rut'] = '%' . $buscar . '%';
+    $params['buscar_nom'] = '%' . $buscar . '%';
 }
 
 $sql .= " ORDER BY id DESC";
