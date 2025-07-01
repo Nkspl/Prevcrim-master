@@ -24,15 +24,22 @@ require_once '../config.php';
         </select>
       </div>
 
-      <div id="seccion-identidad" class="tipo-section" style="display:none;">
+      <div id="seccion-basicos" style="display:none;">
         <div class="form-group">
           <label for="rut">RUT:</label>
           <input id="rut" name="rut">
         </div>
         <div class="form-group">
-          <label for="nombre">Nombre Completo:</label>
+          <label for="nombre">Nombre:</label>
           <input id="nombre" name="nombre">
         </div>
+        <div class="form-group">
+          <label for="apellido">Apellido:</label>
+          <input id="apellido" name="apellido">
+        </div>
+      </div>
+
+      <div id="seccion-identidad" class="tipo-section" style="display:none;">
         <div class="form-group">
           <label for="motivo_desplazamiento">Motivo de Desplazamiento:</label>
           <input id="motivo_desplazamiento" name="motivo_desplazamiento">
@@ -114,15 +121,20 @@ require_once '../config.php';
 </div>
 
 <script>
-  document.getElementById('tipo').addEventListener('change', function() {
+  const tipoSelect = document.getElementById('tipo');
+  const basicos = document.getElementById('seccion-basicos');
+  function actualizarSecciones() {
     document.querySelectorAll('.tipo-section').forEach(s => s.style.display = 'none');
-    const val = this.value;
+    const val = tipoSelect.value;
+    if (basicos) basicos.style.display = val ? 'block' : 'none';
     if (val) document.getElementById('seccion-ubicacion').style.display = 'block';
     if (val === 'identidad') document.getElementById('seccion-identidad').style.display = 'block';
     else if (val === 'vehicular') document.getElementById('seccion-vehicular').style.display = 'block';
     else if (val === 'armas_drogas') document.getElementById('seccion-armas').style.display = 'block';
     else if (val === 'transito') document.getElementById('seccion-transito').style.display = 'block';
-  });
+  }
+  tipoSelect.addEventListener('change', actualizarSecciones);
+  actualizarSecciones();
 
   const ubicacionInput = document.getElementById('ubicacion');
   const latInput = document.getElementById('latitud');

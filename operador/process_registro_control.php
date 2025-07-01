@@ -24,6 +24,7 @@ $data = [
   'tipo' => $tipo,
   'rut' => trim($_POST['rut'] ?? ''),
   'nombre' => trim($_POST['nombre'] ?? ''),
+  'apellido' => trim($_POST['apellido'] ?? ''),
   'motivo_desplazamiento' => trim($_POST['motivo_desplazamiento'] ?? ''),
   'ubicacion' => trim($_POST['ubicacion'] ?? ''),
   'latitud' => $_POST['latitud'] !== '' ? $_POST['latitud'] : null,
@@ -53,7 +54,8 @@ if ($data['longitud'] !== null && !is_numeric($data['longitud'])) {
 
 $limites = [
   'rut' => 12,
-  'nombre' => 150,
+  'nombre' => 100,
+  'apellido' => 100,
   'ubicacion' => 200,
   'licencia_conducir' => 100,
   'padron_vehiculo' => 100,
@@ -70,11 +72,11 @@ foreach ($limites as $campo => $max) {
 }
 
 $sql = "INSERT INTO control_policial
-          (usuario_id,tipo,rut,nombre,motivo_desplazamiento,ubicacion,latitud,longitud,observacion,
+          (usuario_id,tipo,rut,nombre,apellido,motivo_desplazamiento,ubicacion,latitud,longitud,observacion,
            licencia_conducir,padron_vehiculo,revision_seguro,rut_conductor,nombre_conductor,
            pertenencias,permisos_arma,revision_mochila,test_alcoholemia,doc_vehicular)
         VALUES
-          (:usuario_id,:tipo,:rut,:nombre,:motivo_desplazamiento,:ubicacion,:latitud,:longitud,:observacion,
+          (:usuario_id,:tipo,:rut,:nombre,:apellido,:motivo_desplazamiento,:ubicacion,:latitud,:longitud,:observacion,
            :licencia_conducir,:padron_vehiculo,:revision_seguro,:rut_conductor,:nombre_conductor,
            :pertenencias,:permisos_arma,:revision_mochila,:test_alcoholemia,:doc_vehicular)";
 $stmt = $pdo->prepare($sql);
