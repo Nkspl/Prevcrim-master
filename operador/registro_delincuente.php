@@ -176,7 +176,7 @@ $tiposDelito = $stmtTipos->fetchAll();
   </script>
 
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBS9ZZ_-SfCP-HnAOJcRRUVDJO5TqBs2gg&callback=initMap&libraries=places">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaYoejG_5UXM_POLcQ47plW0tDytSmHqQ&callback=initMap&libraries=places">
   </script>
 
   <?php include('../inc/footer.php'); ?>
