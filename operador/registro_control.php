@@ -24,15 +24,20 @@ require_once '../config.php';
         </select>
       </div>
 
+      <div class="form-group">
+        <label for="rut">RUT:</label>
+        <input id="rut" name="rut">
+      </div>
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" name="nombre">
+      </div>
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input id="apellido" name="apellido">
+      </div>
+
       <div id="seccion-identidad" class="tipo-section" style="display:none;">
-        <div class="form-group">
-          <label for="rut">RUT:</label>
-          <input id="rut" name="rut">
-        </div>
-        <div class="form-group">
-          <label for="nombre">Nombre Completo:</label>
-          <input id="nombre" name="nombre">
-        </div>
         <div class="form-group">
           <label for="motivo_desplazamiento">Motivo de Desplazamiento:</label>
           <input id="motivo_desplazamiento" name="motivo_desplazamiento">

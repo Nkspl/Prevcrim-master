@@ -22,9 +22,10 @@ if ($tipo !== '') {
 if ($buscar !== '') {
     // MySQL PDO no permite reutilizar el mismo nombre de placeholder,
     // por lo que usamos dos placeholders distintos
-    $sql .= " AND (rut LIKE :buscar_rut OR nombre LIKE :buscar_nom)";
+    $sql .= " AND (rut LIKE :buscar_rut OR nombre LIKE :buscar_nom OR apellido LIKE :buscar_ape)";
     $params['buscar_rut'] = '%' . $buscar . '%';
     $params['buscar_nom'] = '%' . $buscar . '%';
+    $params['buscar_ape'] = '%' . $buscar . '%';
 }
 
 $sql .= " ORDER BY id DESC";
@@ -57,6 +58,7 @@ $controles = $stmt->fetchAll();
         <th>Tipo</th>
         <th>RUT</th>
         <th>Nombre</th>
+        <th>Apellido</th>
         <th>Motivo Desplazamiento</th>
         <th>Ubicación</th>
         <th>Latitud</th>
@@ -83,6 +85,7 @@ $controles = $stmt->fetchAll();
             <td><?= htmlspecialchars($c['tipo']) ?></td>
             <td><?= htmlspecialchars($c['rut']) ?></td>
             <td><?= htmlspecialchars($c['nombre']) ?></td>
+            <td><?= htmlspecialchars($c['apellido']) ?></td>
             <td><?= htmlspecialchars($c['motivo_desplazamiento']) ?></td>
             <td><?= htmlspecialchars($c['ubicacion']) ?></td>
             <td><?= htmlspecialchars($c['latitud']) ?></td>
@@ -102,7 +105,7 @@ $controles = $stmt->fetchAll();
           </tr>
         <?php endforeach; ?>
       <?php else: ?>
-        <tr><td colspan="20">No hay controles registrados.</td></tr>
+        <tr><td colspan="21">No hay controles registrados.</td></tr>
       <?php endif; ?>
     </tbody>
   </table>

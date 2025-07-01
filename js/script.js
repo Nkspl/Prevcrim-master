@@ -119,6 +119,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const formControl = document.querySelector('form[action="process_registro_control.php"]');
+  if (formControl) {
+    const rutCtl = document.getElementById('rut');
+    const nombreCtl = document.getElementById('nombre');
+    const apellidoCtl = document.getElementById('apellido');
+    if (rutCtl) {
+      rutCtl.addEventListener('blur', () => {
+        const rut = rutCtl.value.trim();
+        if (!rut) return;
+        fetch(`/api/get_delincuente_by_rut.php?rut=${encodeURIComponent(rut)}`)
+          .then(r => r.ok ? r.json() : {})
+          .then(data => {
+            if (data) {
+              if (nombreCtl && !nombreCtl.value) nombreCtl.value = data.nombres || '';
+              if (apellidoCtl && !apellidoCtl.value) apellidoCtl.value = data.apellidos || '';
+              if (data.tiene_delitos) alert('rut con antecedentes delictivos');
+            }
+          })
+          .catch(() => {});
+      });
+    }
+  }
+
   // Autocompletar lat/lon al seleccionar comuna
   const comunaSelect = document.getElementById('comuna');
   const latField = document.getElementById('latitud');
