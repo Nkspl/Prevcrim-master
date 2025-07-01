@@ -23,7 +23,9 @@ if ($check->fetch()) {
 }
 $datos = [
   'rut'             => $rut,
-  'nombre'          => trim($_POST['nombre']),
+  'nombres'         => trim($_POST['nombres']),
+  'apellidos'       => trim($_POST['apellidos']),
+  'apellidos_nombres' => trim($_POST['apellidos']) . ' ' . trim($_POST['nombres']),
   'apodo'           => trim($_POST['apodo']),
   'domicilio'       => trim($_POST['domicilio']),
   'ultimo_lugar'    => trim($_POST['ultimo_lugar']),
@@ -55,8 +57,8 @@ if (!is_numeric($datos['latitud']) || !is_numeric($datos['longitud'])) {
   header("Location: registro_delincuente.php?msg=Coordenadas inválidas"); exit();
 }
 
-if (mb_strlen($datos['nombre']) > 150) {
-  header("Location: registro_delincuente.php?msg=Nombre muy largo"); exit();
+if (mb_strlen($datos['nombres']) > 100 || mb_strlen($datos['apellidos']) > 100) {
+  header("Location: registro_delincuente.php?msg=Nombre o Apellido muy largo"); exit();
 }
 if (mb_strlen($datos['apodo']) > 50) {
   header("Location: registro_delincuente.php?msg=Apodo muy largo"); exit();
@@ -86,11 +88,11 @@ if (!empty($_FILES['imagen']['name'])) {
 
 
 $sql="INSERT INTO delincuente
-    (rut,apellidos_nombres,apodo,domicilio,ultimo_lugar_visto,
+    (rut,nombres,apellidos,apellidos_nombres,apodo,domicilio,ultimo_lugar_visto,
      fono_fijo,celular,email,imagen,fecha_nacimiento,delitos,estado,
      latitud,longitud)
   VALUES
-    (:rut,:nombre,:apodo,:domicilio,:ultimo_lugar,
+    (:rut,:nombres,:apellidos,:apellidos_nombres,:apodo,:domicilio,:ultimo_lugar,
      :fono,:celular,:email,:imagen,:fecha_nacimiento,:delitos,:estado,
      :latitud,:longitud)
 ";

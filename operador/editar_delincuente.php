@@ -21,6 +21,14 @@ $stmt = $pdo->prepare("SELECT * FROM delincuente WHERE id = ?");
 $stmt->execute([$id]);
 $delincuente = $stmt->fetch();
 
+$apellidos = $delincuente['apellidos'] ?? '';
+$nombres = $delincuente['nombres'] ?? '';
+if (!$apellidos && !$nombres && !empty($delincuente['apellidos_nombres'])) {
+    $parts = explode(' ', $delincuente['apellidos_nombres'], 2);
+    $apellidos = $parts[0] ?? '';
+    $nombres = $parts[1] ?? '';
+}
+
 $selectedDelitos = array_filter(array_map('trim', explode(',', $delincuente['delitos'])));
 
 // Estado actual guardado en la base de datos
@@ -45,8 +53,12 @@ if (!$delincuente) {
                 <input id="rut" name="rut" required value="<?= htmlspecialchars($delincuente['rut']) ?>">
             </div>
             <div class="form-group">
-                <label for="nombre">Apellidos y Nombres:</label>
-                <input id="nombre" name="nombre" required value="<?= htmlspecialchars($delincuente['apellidos_nombres']) ?>">
+                <label for="apellidos">Apellidos:</label>
+                <input id="apellidos" name="apellidos" required value="<?= htmlspecialchars($apellidos) ?>">
+            </div>
+            <div class="form-group">
+                <label for="nombres">Nombres:</label>
+                <input id="nombres" name="nombres" required value="<?= htmlspecialchars($nombres) ?>">
             </div>
             <div class="form-group">
                 <label for="apodo">Apodo:</label>
@@ -58,7 +70,7 @@ if (!$delincuente) {
             </div>
             <div class="form-group">
                 <label for="ultimo_lugar">Último Lugar Visto:</label>
-                <input id="ultimo_lugar" name="ultimo_lugar" required value="<?= htmlspecialchars($delincuente['ultimo_lugar_visto']) ?>">
+                <input id="ultimo_lugar" name="ultimo_lugar" placeholder="seleccionalo en el mapa de abajo" required value="<?= htmlspecialchars($delincuente['ultimo_lugar_visto']) ?>">
             </div>
             <div class="form-group">
                 <label for="fono">Fono Fijo:</label>
@@ -125,6 +137,7 @@ if (!$delincuente) {
   function initMap() {
     const latInput = document.getElementById("latitud");
     const lngInput = document.getElementById("longitud");
+    const addressInput = document.getElementById("ultimo_lugar");
 
     const initialLat = parseFloat(latInput.value) || -33.4489;
     const initialLng = parseFloat(lngInput.value) || -70.6693;
@@ -142,17 +155,54 @@ if (!$delincuente) {
       draggable: true,
     });
 
-    map.addListener("click", function (e) {
-      const lat = e.latLng.lat();
-      const lng = e.latLng.lng();
+    const geocoder = new google.maps.Geocoder();
+    const autocomplete = new google.maps.places.Autocomplete(addressInput);
+
+    function updatePosition(location) {
+      const lat = location.lat();
+      const lng = location.lng();
+      map.setCenter(location);
+      marker.setPosition(location);
       latInput.value = lat.toFixed(6);
       lngInput.value = lng.toFixed(6);
-      marker.setPosition({ lat, lng });
+      geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          addressInput.value = results[0].formatted_address;
+        }
+      });
+    }
+
+    function geocodeAddress(value) {
+      if (!value) return;
+      geocoder.geocode({ address: value }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          updatePosition(results[0].geometry.location);
+        }
+      });
+    }
+
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      if (place.geometry) {
+        updatePosition(place.geometry.location);
+      } else {
+        geocodeAddress(addressInput.value);
+      }
+    });
+
+    addressInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        geocodeAddress(addressInput.value);
+      }
+    });
+
+    map.addListener("click", function (e) {
+      updatePosition(e.latLng);
     });
 
     marker.addListener("dragend", function (e) {
-      latInput.value = e.latLng.lat().toFixed(6);
-      lngInput.value = e.latLng.lng().toFixed(6);
+      updatePosition(e.latLng);
     });
   }
 </script>

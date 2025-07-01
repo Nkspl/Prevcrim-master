@@ -89,7 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const formRegistro = document.querySelector('form[action="process_registro_delincuente.php"]');
   if (formRegistro) {
     const rutField = document.getElementById('rut');
-    const nombreField = document.getElementById('nombre');
+    const nombresField = document.getElementById('nombres');
+    const apellidosField = document.getElementById('apellidos');
     const apodoField = document.getElementById('apodo');
     const fechaField = document.getElementById('fecha_nacimiento');
 
@@ -101,8 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`/api/get_delincuente_by_rut.php?rut=${encodeURIComponent(rut)}`)
           .then(r => r.ok ? r.json() : {})
           .then(data => {
-            if (data && data.apellidos_nombres) {
-              if (nombreField) nombreField.value = data.apellidos_nombres;
+            if (data) {
+              if (nombresField) nombresField.value = data.nombres || '';
+              if (apellidosField) apellidosField.value = data.apellidos || '';
+              if (!data.nombres && data.apellidos_nombres) {
+                const parts = data.apellidos_nombres.split(' ', 2);
+                if (apellidosField && !apellidosField.value) apellidosField.value = parts[0] || '';
+                if (nombresField && !nombresField.value) nombresField.value = parts[1] || '';
+              }
               if (apodoField) apodoField.value = data.apodo || '';
               if (fechaField) fechaField.value = data.fecha_nacimiento || '';
             }
