@@ -126,6 +126,18 @@ $tiposDelito = $stmtTipos->fetchAll();
       const geocoder = new google.maps.Geocoder();
       const autocomplete = new google.maps.places.Autocomplete(addressInput);
 
+      function reverseGeocodeOSM(lat, lng) {
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
+        fetch(url)
+          .then(r => r.json())
+          .then(data => {
+            if (data && data.display_name) {
+              addressInput.value = data.display_name;
+            }
+          })
+          .catch(() => {});
+      }
+
       function updatePosition(location) {
         const lat = location.lat();
         const lng = location.lng();
@@ -136,6 +148,8 @@ $tiposDelito = $stmtTipos->fetchAll();
         geocoder.geocode({ location: { lat, lng } }, (results, status) => {
           if (status === "OK" && results[0]) {
             addressInput.value = results[0].formatted_address;
+          } else {
+            reverseGeocodeOSM(lat, lng);
           }
         });
       }
