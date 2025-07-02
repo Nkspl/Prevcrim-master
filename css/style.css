@@ -290,20 +290,23 @@ padding: 0 1rem;
   flex-wrap: wrap;
   gap: 20px;
   margin-top: 20px;
+  margin-bottom: 60px;
 }
 
 .delincuente-card {
-  background: #fff;
-  border: 1px solid #ddd;
+  background: #f8f8f9;
+  border: 5px solid #010344;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  width: 280px;
+  width: 385px;
   padding: 15px;
+  text-align: center;
+   font-size: 14px;
 }
 
 .delincuente-card img {
   width: 100%;
-  height: 180px;
+  height: 200px;
   object-fit: cover;
   border-radius: 4px;
 }
