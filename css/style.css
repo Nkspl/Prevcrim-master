@@ -319,3 +319,10 @@ padding: 0 1rem;
 @media print {
   header, #sidebar, .print-hide { display: none; }
 }
+
+.Actuali{
+  background-color:#004466;
+   border-radius: 4px;
+   color:#f6f6f8;
+   border: 3px solid #004466;
+}

@@ -92,7 +92,7 @@ $delincuentes = $stmt->fetchAll();
           <p><strong>Teléfono:</strong> <?= htmlspecialchars($row['fono_fijo']) ?: htmlspecialchars($row['celular']) ?></p>
           <p><strong>Email:</strong> <?= htmlspecialchars($row['email']) ?></p>
           <a href="editar_delincuente.php?id=<?= htmlspecialchars($row['id']) ?>">
-            <button>Actualizar</button>
+            <button class="Actuali">Actualizar</button> 
           </a>
           <?php if (!empty($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
             <form method="POST" action="eliminar_delincuente.php" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este registro?');">
