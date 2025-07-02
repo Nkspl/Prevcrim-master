@@ -9,7 +9,7 @@ require_once 'inc/funciones.php';
 $rut               = '24.471.968-6';      // formateado con puntos y guión
 $nombre            = 'Nickens Pierre Louis';
 $password_plain    = '1234';   // contraseña en texto plano
-$rol               = 'operador';          // 'admin', 'jefe_zona' o 'operador'
+$rol               = 'admin';          // 'admin', 'jefe_zona' o 'operador'
 $institucion_id    = null ;                   // ID de la institución (o NULL)
 $fecha_habilitacion= date('Y-m-d');       // hoy
 

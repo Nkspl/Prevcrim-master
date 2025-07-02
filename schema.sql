@@ -119,27 +119,27 @@ CREATE TABLE IF NOT EXISTS control_policial (
 
 INSERT INTO tipo_delito (nombre, descripcion) VALUES
   -- Delitos contra las Personas:
-  ('Delitos contra las Personas','Homicidios, Lesiones, Femicidio, Secuestro, Amenazas, Violencia intrafamiliar, Delitos sexuales (violación)'),
+  ('Delitos contra las Personas','(Involucra: Homicidios, Lesiones, Femicidio, Agresion, Secuestro, Amenazas, Violencia intrafamiliar, Delitos sexuales (violación))'),
   -- Delitos contra la Propiedad:
-  ('Delitos contra la Propiedad','Robos con violencia o intimidación, Robos en lugar habitado o no habitado, Hurto y robo de vehículos motorizados'),
+  ('Delitos contra la Propiedad','(Involucra: Robos con violencia o intimidación, Robos en lugar habitado o no habitado, Hurto y robo de vehículos motorizados)'),
   -- Delitos Económicos:
-  ('Delitos Económicos','Delitos financieros, Fraude y otros' ),
+  ('Delitos Económicos','(Involucra: Delitos financieros, Fraude y otros)' ),
   -- Delitos contra el Medio Ambiente y Patrimonio Cultural:
-  ('Delitos contra el Medio Ambiente y Patrimonio Cultural','Daños al medio ambiente,daños a bienes culturales'),
+  ('Delitos contra el Medio Ambiente y Patrimonio Cultural','(Involucra: Daños al medio ambiente,daños a bienes culturales)'),
   -- Corrupción:
-  ('Corrupción','Malversación de fondos y otros'),
+  ('Corrupción','(Involucra: Malversación de fondos y otros)'),
   -- Crimen Organizado y Lavado de Dinero:
-  ('Crimen Organizado y lavado de Dinero', 'involucra estructuras criminales y el movimiento de fondos ilícitos'),
+  ('Crimen Organizado y lavado de Dinero', '(involucra: estructuras criminales y el movimiento de fondos ilícitos)'),
   -- Delitos contra la Seguridad Individual:
-  ('Delitos contra la Seguridad Individual', 'Abandono de niños, Abandono de personas desvalidas, ect'),
+  ('Delitos contra la Seguridad Individual', '(Abandono de niños, Abandono de personas desvalidas, ect)'),
   -- Delitos contra la Seguridad Pública:
-  ('Delitos contra la Seguridad Pública', 'Terrorismo y otros que ponen en riesgo la seguridad de la población'),
+  ('Delitos contra la Seguridad Pública', '(Involucra: Terrorismo y otros que ponen en riesgo la seguridad de la población)'),
   -- Delitos contra la Salud Pública:
-  ('Delitos contra la Salud Pública','Producción y distribución de drogas ilegales'),
+  ('Delitos contra la Salud Pública','(Involucra: Producción y distribución de drogas ilegales)'),
   -- Delitos Informáticos:
-  ('Delitos Informáticos', 'Acceso ilícito a sistemas informáticos, Difusión de malware entre otros'),
+  ('Delitos Informáticos', '(Involucra: Acceso ilícito a sistemas informáticos, Difusión de malware entre otros)'),
   -- Delitos Políticos o contra el Estado:
-  ('Delitos Políticos o contra el Estado', 'Traición a la patria y otros delitos que atentan contra la estabilidad del estado');
+  ('Delitos Políticos o contra el Estado', '(Involucra: Traición a la patria y otros delitos que atentan contra la estabilidad del estado)');
 
 
 INSERT INTO comuna (nombre, latitud, longitud) VALUES
