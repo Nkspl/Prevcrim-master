@@ -70,7 +70,7 @@ if (!$delincuente) {
             </div>
             <div class="form-group">
                 <label for="ultimo_lugar">Último Lugar Visto:</label>
-                <input id="ultimo_lugar" name="ultimo_lugar" placeholder="seleccionalo en el mapa de abajo" required value="<?= htmlspecialchars($delincuente['ultimo_lugar_visto']) ?>">
+                <input id="ultimo_lugar" name="ultimo_lugar" placeholder="seleccionalo en el mapa de abajo" required readonly value="<?= htmlspecialchars($delincuente['ultimo_lugar_visto']) ?>">
             </div>
             <div class="form-group">
                 <label for="fono">Fono Fijo:</label>
@@ -119,11 +119,11 @@ if (!$delincuente) {
             </div>
             <div class="form-group">
                 <label for="latitud">Latitud:</label>
-                <input id="latitud" name="latitud" required value="<?= htmlspecialchars($delincuente['latitud']) ?>">
+                <input id="latitud" name="latitud" required readonly value="<?= htmlspecialchars($delincuente['latitud']) ?>">
             </div>
             <div class="form-group">
                 <label for="longitud">Longitud:</label>
-                <input id="longitud" name="longitud" required value="<?= htmlspecialchars($delincuente['longitud']) ?>">
+                <input id="longitud" name="longitud" required readonly value="<?= htmlspecialchars($delincuente['longitud']) ?>">
             </div>
             <button type="submit">Guardar Cambios</button>
         </form>
