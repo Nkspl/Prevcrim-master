@@ -98,12 +98,22 @@ if ($format === 'html') {
 ?>
 <script>
 function initMap(){
-  const map=new google.maps.Map(document.getElementById('map'),{zoom:6,center:{lat:-33.45,lng:-70.66}});
-  const bounds=new google.maps.LatLngBounds();
-  <?php foreach ($delitos as $d): ?>
-    const m=new google.maps.Marker({position:{lat:parseFloat('<?= $d['latitud'] ?>'),lng:parseFloat('<?= $d['longitud'] ?>')},map,title:"Lugar: <?= htmlspecialchars($d['comuna'], ENT_QUOTES) ?>"});
+  const map = new google.maps.Map(
+    document.getElementById('map'),
+    { zoom: 6, center: { lat: -33.45, lng: -70.66 } }
+  );
+  const bounds = new google.maps.LatLngBounds();
+  <?php foreach ($delitos as $d): if ($d['latitud'] !== null && $d['longitud'] !== null): ?>
+    const m = new google.maps.Marker({
+      position: {
+        lat: parseFloat('<?= $d['latitud'] ?>'),
+        lng: parseFloat('<?= $d['longitud'] ?>')
+      },
+      map,
+      title: "Lugar: <?= htmlspecialchars($d['comuna'], ENT_QUOTES) ?>"
+    });
     bounds.extend(m.getPosition());
-  <?php endforeach; ?>
+  <?php endif; endforeach; ?>
   if(!bounds.isEmpty()) map.fitBounds(bounds);
 }
 </script>

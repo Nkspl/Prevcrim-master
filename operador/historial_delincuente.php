@@ -139,17 +139,25 @@ if ($rut) {
 <?php if ($rut && $persona && $delitos): ?>
 <script>
   function initMap() {
-    const map = new google.maps.Map(document.getElementById('map'), { zoom: 6, center: {lat: -33.45, lng: -70.66}});
+    const map = new google.maps.Map(
+      document.getElementById('map'),
+      { zoom: 6, center: { lat: -33.45, lng: -70.66 } }
+    );
     const bounds = new google.maps.LatLngBounds();
-    <?php foreach ($delitos as $d): ?>
+    <?php foreach ($delitos as $d): if ($d['latitud'] !== null && $d['longitud'] !== null): ?>
       const marker = new google.maps.Marker({
-        position: {lat: parseFloat('<?= $d['latitud'] ?>'), lng: parseFloat('<?= $d['longitud'] ?>')},
+        position: {
+          lat: parseFloat('<?= $d['latitud'] ?>'),
+          lng: parseFloat('<?= $d['longitud'] ?>')
+        },
         map,
         title: "Lugar: <?= htmlspecialchars($d['comuna'], ENT_QUOTES) ?>"
       });
       bounds.extend(marker.getPosition());
-    <?php endforeach; ?>
-    map.fitBounds(bounds);
+    <?php endif; endforeach; ?>
+    if (!bounds.isEmpty()) {
+      map.fitBounds(bounds);
+    }
   }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaYoejG_5UXM_POLcQ47plW0tDytSmHqQ&callback=initMap"></script>
