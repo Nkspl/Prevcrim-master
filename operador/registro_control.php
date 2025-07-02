@@ -57,11 +57,11 @@ require_once '../config.php';
         </div>
         <div class="form-group">
           <label for="latitud">Latitud:</label>
-          <input id="latitud" name="latitud">
+          <input id="latitud" name="latitud" readonly>
         </div>
         <div class="form-group">
           <label for="longitud">Longitud:</label>
-          <input id="longitud" name="longitud">
+          <input id="longitud" name="longitud" readonly>
         </div>
       </div>
 
