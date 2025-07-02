@@ -13,6 +13,7 @@ $lista = $pdo->query("SELECT DISTINCT rut, apellidos_nombres FROM delincuente OR
 $rut = $_GET['rut'] ?? '';
 $persona = null;
 $delitos = [];
+$controles = [];
 if ($rut) {
     $stmt = $pdo->prepare("SELECT * FROM delincuente WHERE rut = ? LIMIT 1");
     $stmt->execute([$rut]);
@@ -25,6 +26,14 @@ if ($rut) {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$persona['id']]);
         $delitos = $stmt->fetchAll();
+
+        $sql = "SELECT created_at, tipo, ubicacion, observacion
+                FROM control_policial
+                WHERE rut = ?
+                ORDER BY created_at DESC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$rut]);
+        $controles = $stmt->fetchAll();
     }
 }
 ?>
@@ -93,6 +102,31 @@ if ($rut) {
         </tbody>
       </table>
       <div id="map" style="height:400px;margin-top:20px;"></div>
+      <h3>Historial de Controles</h3>
+      <?php if ($controles): ?>
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Ubicación</th>
+            <th>Observación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($controles as $c): ?>
+            <tr>
+              <td><?= htmlspecialchars($c['created_at']) ?></td>
+              <td><?= htmlspecialchars($c['tipo']) ?></td>
+              <td><?= htmlspecialchars($c['ubicacion']) ?></td>
+              <td><?= htmlspecialchars($c['observacion']) ?></td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+      <?php else: ?>
+        <p>No hay controles registrados.</p>
+      <?php endif; ?>
       <?php else: ?>
         <p>No hay delitos registrados.</p>
       <?php endif; ?>

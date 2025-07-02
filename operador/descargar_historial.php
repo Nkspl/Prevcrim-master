@@ -25,6 +25,14 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([$persona['id']]);
 $delitos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$sql = "SELECT created_at, tipo, ubicacion, observacion
+        FROM control_policial
+        WHERE rut = ?
+        ORDER BY created_at DESC";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$rut]);
+$controles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 if ($format === 'html') {
     include '../inc/header.php';
     echo '<div class="wrapper"><div class="content">';
@@ -32,6 +40,9 @@ if ($format === 'html') {
     echo '<button onclick="window.print()" class="print-hide">Imprimir</button>';
     echo '<h3>Datos Personales</h3>';
     echo '<table><tbody>';
+    if (!empty($persona['imagen'])) {
+        echo '<tr><th>Imagen</th><td><img src="/'.htmlspecialchars($persona['imagen']).'" style="max-width:150px;"></td></tr>';
+    }
     foreach ([
         'RUT' => $persona['rut'],
         'Nombre' => $persona['apellidos_nombres'],
@@ -61,12 +72,43 @@ if ($format === 'html') {
             echo '</tr>';
         }
         echo '</tbody></table>';
+        echo '<div id="map" style="height:400px;margin-top:20px;"></div>';
     } else {
         echo '<p>No hay delitos registrados.</p>';
     }
+
+    echo '<h3>Historial de Controles</h3>';
+    if ($controles) {
+        echo '<table><thead><tr><th>Fecha</th><th>Tipo</th><th>Ubicación</th><th>Observación</th></tr></thead><tbody>';
+        foreach ($controles as $c) {
+            echo '<tr>';
+            foreach ([$c['created_at'],$c['tipo'],$c['ubicacion'],$c['observacion']] as $val) {
+                echo '<td>'.htmlspecialchars($val).'</td>';
+            }
+            echo '</tr>';
+        }
+        echo '</tbody></table>';
+    } else {
+        echo '<p>No hay controles registrados.</p>';
+    }
+
     echo '</div>';
     include '../inc/footer.php';
     echo '</div>';
+?>
+<script>
+function initMap(){
+  const map=new google.maps.Map(document.getElementById('map'),{zoom:6,center:{lat:-33.45,lng:-70.66}});
+  const bounds=new google.maps.LatLngBounds();
+  <?php foreach ($delitos as $d): ?>
+    const m=new google.maps.Marker({position:{lat:parseFloat('<?= $d['latitud'] ?>'),lng:parseFloat('<?= $d['longitud'] ?>')},map,title:"Lugar: <?= htmlspecialchars($d['comuna'], ENT_QUOTES) ?>"});
+    bounds.extend(m.getPosition());
+  <?php endforeach; ?>
+  if(!bounds.isEmpty()) map.fitBounds(bounds);
+}
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaYoejG_5UXM_POLcQ47plW0tDytSmHqQ&callback=initMap"></script>
+<?php
     exit;
 }
 
