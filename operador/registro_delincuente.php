@@ -39,7 +39,7 @@ $tiposDelito = $stmtTipos->fetchAll();
       </div>
       <div class="form-group">
         <label for="ultimo_lugar">Último Lugar Visto:</label>
-        <input id="ultimo_lugar" name="ultimo_lugar" placeholder="seleccionalo en el mapa de abajo" required>
+        <input id="ultimo_lugar" name="ultimo_lugar" placeholder="seleccionalo en el mapa de abajo" required readonly>
       </div>
       <div class="form-group">
         <label for="fono">Fono Fijo:</label>
@@ -85,11 +85,11 @@ $tiposDelito = $stmtTipos->fetchAll();
       </div>
       <div class="form-group">
         <label for="latitud">Latitud:</label>
-        <input id="latitud" name="latitud" placeholder="Ej: -33.4489" required>
+        <input id="latitud" name="latitud" placeholder="Ej: -33.4489" required readonly>
       </div>
       <div class="form-group">
         <label for="longitud">Longitud:</label>
-        <input id="longitud" name="longitud" placeholder="Ej: -70.6693" required>
+        <input id="longitud" name="longitud" placeholder="Ej: -70.6693" required readonly>
       </div>
       <button type="submit">Registrar Delincuente</button>
     </form>
