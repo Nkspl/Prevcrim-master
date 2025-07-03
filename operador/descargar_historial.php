@@ -52,11 +52,9 @@ if ($format === 'html') {
         'Celular' => $persona['celular'],
         'Email' => $persona['email'],
         'Fecha Nac.' => $persona['fecha_nacimiento'],
-        'Delitos' => (function($d){
-            if (empty($d)) return 'sin registros aun';
-            $c = count(array_filter(array_map('trim', explode(',', $d))));
+        'Delitos' => (function($c){
             return $c > 0 ? $c : 'sin registros aun';
-        })($persona['delitos']),
+        })(count($delitos)),
         'Estado' => $persona['estado'],
         'Último Lugar Visto' => $persona['ultimo_lugar_visto'],
         'Latitud' => $persona['latitud'],
@@ -141,7 +139,7 @@ fputcsv($out, [
     $persona['celular'],
     $persona['email'],
     $persona['fecha_nacimiento'],
-    $persona['delitos'],
+    count($delitos),
     $persona['estado'],
     $persona['ultimo_lugar_visto'],
     $persona['latitud'],
