@@ -15,7 +15,7 @@ $persona = null;
 $delitos = [];
 $controles = [];
 if ($rut) {
-    $stmt = $pdo->prepare("SELECT * FROM delincuente WHERE rut = ? LIMIT 1");
+    $stmt = $pdo->prepare("SELECT d.*, (SELECT COUNT(*) FROM delito dl WHERE dl.delincuente_id = d.id) AS delitos_count FROM delincuente d WHERE d.rut = ? LIMIT 1");
     $stmt->execute([$rut]);
     $persona = $stmt->fetch();
     if ($persona) {
@@ -65,12 +65,7 @@ if ($rut) {
           <tr><th>Celular</th><td><?= htmlspecialchars($persona['celular']) ?></td></tr>
           <tr><th>Email</th><td><?= htmlspecialchars($persona['email']) ?></td></tr>
           <tr><th>Fecha Nac.</th><td><?= htmlspecialchars($persona['fecha_nacimiento']) ?></td></tr>
-          <?php
-            $delitosCount = 0;
-            if (!empty($persona['delitos'])) {
-              $delitosCount = count(array_filter(array_map('trim', explode(',', $persona['delitos']))));
-            }
-          ?>
+          <?php $delitosCount = (int)$persona['delitos_count']; ?>
           <tr><th>Delitos</th><td><?= $delitosCount > 0 ? $delitosCount : 'sin registros aun' ?></td></tr>
           <tr><th>Estado</th><td><?= htmlspecialchars($persona['estado']) ?></td></tr>
           <tr><th>Último Lugar Visto</th><td><?= htmlspecialchars($persona['ultimo_lugar_visto']) ?></td></tr>

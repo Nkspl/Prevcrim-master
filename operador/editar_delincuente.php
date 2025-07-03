@@ -27,10 +27,9 @@ if (!$apellidos && !$nombres && !empty($delincuente['apellidos_nombres'])) {
 }
 
 
-$delitosCount = 0;
-if (!empty($delincuente['delitos'])) {
-    $delitosCount = count(array_filter(array_map('trim', explode(',', $delincuente['delitos']))));
-}
+$stmtDelitos = $pdo->prepare('SELECT COUNT(*) FROM delito WHERE delincuente_id = ?');
+$stmtDelitos->execute([$delincuente['id']]);
+$delitosCount = (int)$stmtDelitos->fetchColumn();
 
 // Estado actual guardado en la base de datos
 $estadoActual = $delincuente['estado'] ?? '';

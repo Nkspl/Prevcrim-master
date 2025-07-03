@@ -11,12 +11,14 @@ require_once __DIR__ . '/../config.php';
 $buscar = $_GET['buscar'] ?? '';
 
 if ($buscar !== '') {
-  $sql = "SELECT id, rut, apellidos_nombres, apodo, domicilio, ultimo_lugar_visto, fono_fijo, celular, email, fecha_nacimiento, delitos, estado, imagen
-          FROM delincuente
-          WHERE apellidos_nombres LIKE :buscar1
-             OR apodo LIKE :buscar2
-             OR delitos LIKE :buscar3
-          ORDER BY id DESC";
+  $sql = "SELECT d.id, d.rut, d.apellidos_nombres, d.apodo, d.domicilio, d.ultimo_lugar_visto,
+                 d.fono_fijo, d.celular, d.email, d.fecha_nacimiento, d.delitos, d.estado, d.imagen,
+                 (SELECT COUNT(*) FROM delito dl WHERE dl.delincuente_id = d.id) AS delitos_count
+          FROM delincuente d
+          WHERE d.apellidos_nombres LIKE :buscar1
+             OR d.apodo LIKE :buscar2
+             OR d.delitos LIKE :buscar3
+          ORDER BY d.id DESC";
   $stmt = $pdo->prepare($sql);
   $param = "%$buscar%";
   $stmt->execute([
@@ -25,9 +27,11 @@ if ($buscar !== '') {
     'buscar3' => $param,
   ]);
 } else {
-  $sql = "SELECT id, rut, apellidos_nombres, apodo, domicilio, ultimo_lugar_visto, fono_fijo, celular, email, fecha_nacimiento, delitos, estado, imagen
-          FROM delincuente
-          ORDER BY id DESC";
+  $sql = "SELECT d.id, d.rut, d.apellidos_nombres, d.apodo, d.domicilio, d.ultimo_lugar_visto,
+                 d.fono_fijo, d.celular, d.email, d.fecha_nacimiento, d.delitos, d.estado, d.imagen,
+                 (SELECT COUNT(*) FROM delito dl WHERE dl.delincuente_id = d.id) AS delitos_count
+          FROM delincuente d
+          ORDER BY d.id DESC";
   $stmt = $pdo->query($sql);
 }
 
@@ -66,13 +70,8 @@ $delincuentes = $stmt->fetchAll();
           <p><strong>Nombre Completo:</strong> <?= htmlspecialchars($row['apellidos_nombres']) ?></p>
           <p><strong>Apodo:</strong> <?= htmlspecialchars($row['apodo']) ?></p>
           <p><strong>Último Lugar Visto:</strong> <?= htmlspecialchars($row['ultimo_lugar_visto']) ?></p>
-          <?php
-            $count = 0;
-            if (!empty($row['delitos'])) {
-              $count = count(array_filter(array_map('trim', explode(',', $row['delitos']))));
-            }
-          ?>
-          <p><strong>Delitos:</strong> <?= $count > 0 ? $count : 'sin registros aun' ?></p>
+          <?php $dcount = (int)$row['delitos_count']; ?>
+          <p><strong>Delitos:</strong> <?= $dcount > 0 ? $dcount : 'sin registros aun' ?></p>
           <p><strong>Estado:</strong>
             <?php
               $estado = $row['estado'];
