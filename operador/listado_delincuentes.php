@@ -71,7 +71,7 @@ $delincuentes = $stmt->fetchAll();
           <p><strong>Apodo:</strong> <?= htmlspecialchars($row['apodo']) ?></p>
           <p><strong>Último Lugar Visto:</strong> <?= htmlspecialchars($row['ultimo_lugar_visto']) ?></p>
           <?php $dcount = (int)$row['delitos_count']; ?>
-          <p><strong>Delitos:</strong> <?= $dcount > 0 ? $dcount : 'sin registros aun' ?></p>
+          <p><strong>Delitos registrados:</strong> <?= $dcount > 0 ? $dcount : 'sin registros aun' ?></p>
           <p><strong>Estado:</strong>
             <?php
               $estado = $row['estado'];

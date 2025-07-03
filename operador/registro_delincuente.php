@@ -58,7 +58,7 @@ require_once '../config.php';
         <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
       </div>
       <div class="form-group">
-        <label for="delitos">Delitos:</label>
+        <label for="delitos">Numero de Delito registrado:</label>
         <input id="delitos" name="delitos" readonly value="sin registros aun">
       </div>
       <div class="form-group">
