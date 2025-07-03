@@ -62,7 +62,7 @@ $stmt->execute([
     'email' => $_POST['email'],
     'imagen' => $imagen,
     'fecha_nacimiento' => $_POST['fecha_nacimiento'],
-    'delitos' => isset($_POST['delitos']) ? implode(',', $_POST['delitos']) : '',
+    'delitos' => trim($_POST['delitos'] ?? ''),
     'estado' => $estado,
     'latitud' => $_POST['latitud'],
     'longitud' => $_POST['longitud'],

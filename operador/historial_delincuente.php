@@ -65,7 +65,13 @@ if ($rut) {
           <tr><th>Celular</th><td><?= htmlspecialchars($persona['celular']) ?></td></tr>
           <tr><th>Email</th><td><?= htmlspecialchars($persona['email']) ?></td></tr>
           <tr><th>Fecha Nac.</th><td><?= htmlspecialchars($persona['fecha_nacimiento']) ?></td></tr>
-          <tr><th>Delitos</th><td><?= htmlspecialchars($persona['delitos']) ?></td></tr>
+          <?php
+            $delitosCount = 0;
+            if (!empty($persona['delitos'])) {
+              $delitosCount = count(array_filter(array_map('trim', explode(',', $persona['delitos']))));
+            }
+          ?>
+          <tr><th>Delitos</th><td><?= $delitosCount > 0 ? $delitosCount : 'sin registros aun' ?></td></tr>
           <tr><th>Estado</th><td><?= htmlspecialchars($persona['estado']) ?></td></tr>
           <tr><th>Último Lugar Visto</th><td><?= htmlspecialchars($persona['ultimo_lugar_visto']) ?></td></tr>
           <tr><th>Latitud</th><td><?= htmlspecialchars($persona['latitud']) ?></td></tr>

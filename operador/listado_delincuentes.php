@@ -66,7 +66,13 @@ $delincuentes = $stmt->fetchAll();
           <p><strong>Nombre Completo:</strong> <?= htmlspecialchars($row['apellidos_nombres']) ?></p>
           <p><strong>Apodo:</strong> <?= htmlspecialchars($row['apodo']) ?></p>
           <p><strong>Último Lugar Visto:</strong> <?= htmlspecialchars($row['ultimo_lugar_visto']) ?></p>
-          <p><strong>Delitos:</strong> <?= htmlspecialchars($row['delitos']) ?></p>
+          <?php
+            $count = 0;
+            if (!empty($row['delitos'])) {
+              $count = count(array_filter(array_map('trim', explode(',', $row['delitos']))));
+            }
+          ?>
+          <p><strong>Delitos:</strong> <?= $count > 0 ? $count : 'sin registros aun' ?></p>
           <p><strong>Estado:</strong>
             <?php
               $estado = $row['estado'];
