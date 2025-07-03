@@ -98,6 +98,15 @@ $sql="INSERT INTO delincuente
 ";
 $insert=$pdo->prepare($sql);
 if ($insert->execute($datos)) {
+  $newId=$pdo->lastInsertId();
+  logActividadDelincuente($pdo,[
+    'delincuente_id'=>$newId,
+    'rut'=>$datos['rut'],
+    'nombre'=>$datos['apellidos_nombres'],
+    'accion'=>'registrado',
+    'datos'=>'',
+    'autor_id'=>$_SESSION['user_id']
+  ]);
   header("Location: registro_delincuente.php?msg=Registrado"); exit();
 } else {
   header("Location: registro_delincuente.php?msg=Error"); exit();

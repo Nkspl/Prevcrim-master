@@ -31,6 +31,16 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         'rut'=>$rut,'nombre'=>$nombre,'pass'=>$hash,
         'rol'=>$rol,'iid'=>$inst_id,'fh'=>$fh
       ])) {
+        $newId=$pdo->lastInsertId();
+        logActividadUsuario($pdo,[
+          'usuario_id'=>$newId,
+          'rut'=>$rut,
+          'nombre'=>$nombre,
+          'rol'=>$rol,
+          'accion'=>'creado',
+          'datos'=>'',
+          'autor_id'=>$_SESSION['user_id']
+        ]);
         header("Location: gestion_usuarios.php");exit();
       } else { $error="Error al crear usuario"; }
     }

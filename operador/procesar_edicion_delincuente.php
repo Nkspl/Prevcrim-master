@@ -6,6 +6,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'operador') {
 }
 
 require_once '../config.php';
+require_once '../inc/funciones.php';
 
 $imagen = $_POST['imagen_actual'] ?? null;
 if (!empty($_FILES['imagen']['name'])) {
@@ -49,6 +50,7 @@ if (!in_array($estado, $permitidos, true)) {
     exit;
 }
 
+$id=$_POST['id'];
 $stmt->execute([
     'rut' => $_POST['rut'],
     'nombres' => $_POST['nombres'],
@@ -66,7 +68,16 @@ $stmt->execute([
     'estado' => $estado,
     'latitud' => $_POST['latitud'],
     'longitud' => $_POST['longitud'],
-    'id' => $_POST['id']
+    'id' => $id
+]);
+// Registrar actividad
+logActividadDelincuente($pdo,[
+    'delincuente_id'=>$id,
+    'rut'=>$_POST['rut'],
+    'nombre'=>trim($_POST['apellidos']).' '.trim($_POST['nombres']),
+    'accion'=>'actualizado',
+    'datos'=>'',
+    'autor_id'=>$_SESSION['user_id']
 ]);
 
 header('Location: listado_delincuentes.php?msg=Delincuente actualizado');

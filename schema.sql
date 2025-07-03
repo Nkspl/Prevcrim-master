@@ -510,3 +510,30 @@ INSERT INTO comuna (nombre, latitud, longitud) VALUES
   ('San Gregorio', -52.3258, -69.5769),
   ('Timaukel', -54.0907, -68.8974),
   ('Torres del Paine', -51.0593, -73.0203);
+
+# Tabla para registrar actividad de usuarios
+CREATE TABLE IF NOT EXISTS usuario_actividad (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  usuario_id INT DEFAULT NULL,
+  rut VARCHAR(12),
+  nombre VARCHAR(100),
+  rol ENUM('admin','jefe_zona','operador'),
+  accion ENUM('creado','actualizado','eliminado') NOT NULL,
+  datos TEXT,
+  autor_id INT DEFAULT NULL,
+  fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (autor_id) REFERENCES usuario(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+# Tabla para registrar actividad de delincuentes
+CREATE TABLE IF NOT EXISTS delincuente_actividad (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  delincuente_id INT DEFAULT NULL,
+  rut VARCHAR(12),
+  nombre VARCHAR(150),
+  accion ENUM('registrado','actualizado','eliminado') NOT NULL,
+  datos TEXT,
+  autor_id INT DEFAULT NULL,
+  fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (autor_id) REFERENCES usuario(id) ON DELETE SET NULL
+) ENGINE=InnoDB;

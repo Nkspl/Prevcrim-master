@@ -80,6 +80,14 @@
   <button onclick="location.href='/reportes.php';">
     <i class="fa-solid fa-chart-simple"></i> Reportes
   </button>
+  <?php if (!empty($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
+    <button onclick="location.href='/actividad/usuarios.php';">
+      <i class="fa-solid fa-list"></i> Actividad Usuarios
+    </button>
+    <button onclick="location.href='/actividad/movimientos.php';">
+      <i class="fa-solid fa-clock-rotate-left"></i> Actividad Sistema
+    </button>
+  <?php endif; ?>
   <button onclick="location.href='/mapa_delincuentes.php';">
     <i class="fa-solid fa-map-location-dot"></i> Mapa
   </button>

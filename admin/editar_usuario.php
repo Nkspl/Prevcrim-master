@@ -36,6 +36,22 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $params['id']=$id;
     $st=$pdo->prepare($sql);
     if ($st->execute($params)) {
+      $cambios=[];
+      if($rut!=$u['rut']) $cambios[]='rut';
+      if($nombre!=$u['nombre']) $cambios[]='nombre';
+      if($rol!=$u['rol']) $cambios[]='rol';
+      if($inst_id!=$u['institucion_id']) $cambios[]='institucion_id';
+      if($fh!=$u['fecha_habilitacion']) $cambios[]='fecha_habilitacion';
+      if(!empty($_POST['password'])) $cambios[]='password';
+      logActividadUsuario($pdo,[
+        'usuario_id'=>$id,
+        'rut'=>$rut,
+        'nombre'=>$nombre,
+        'rol'=>$rol,
+        'accion'=>'actualizado',
+        'datos'=>implode(',', $cambios),
+        'autor_id'=>$_SESSION['user_id']
+      ]);
       header("Location: gestion_usuarios.php");exit();
     } else { $error="Error al actualizar"; }
   }
