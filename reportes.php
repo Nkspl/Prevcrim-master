@@ -8,6 +8,18 @@ if (!isset($_SESSION['user_id'])) {
 require_once 'config.php';
 
 $reporte = $_GET['reporte'] ?? 'alfabetico';
+$reporte_nombres = [
+    'alfabetico'              => 'Delincuentes por orden alfabético',
+    'por_delito'              => 'Delincuentes por Delito',
+    'por_comuna_domicilio'    => 'Delincuentes por Comuna de Residencia',
+    'por_comuna_visto'        => 'Delincuentes por Última Comuna Vista',
+    'parentesco'              => 'Delincuentes con Parentesco',
+    'delitos_por_sector_fecha'=> 'Delitos por Comuna/Sector y Fecha',
+    'historico_delitos_sector'=> 'Histórico de Delitos por Sector',
+    'busqueda_global'         => 'Búsqueda Global',
+    'ranking_comunas'         => 'Ranking de Comunas',
+    'mapa_delitos'            => 'Mapa de Delitos',
+];
 $inicio  = $_GET['inicio']  ?? '';
 $fin     = $_GET['fin']     ?? '';
 $comuna  = trim($_GET['comuna']  ?? '');
@@ -23,10 +35,15 @@ function fetchAll($pdo, $sql, $params = []) {
 $datos = [];
 switch ($reporte) {
     case 'alfabetico':
-        $datos = fetchAll($pdo, 'SELECT rut, apellidos_nombres, estado FROM delincuente ORDER BY apellidos_nombres');
+        $sql = "SELECT d.rut, d.apellidos_nombres, d.estado, td.nombre AS tipo_delito, dl.descripcion, dl.fecha
+                FROM delincuente d
+                LEFT JOIN delito dl ON dl.delincuente_id = d.id
+                LEFT JOIN tipo_delito td ON dl.tipo_id = td.id
+                ORDER BY d.apellidos_nombres";
+        $datos = fetchAll($pdo, $sql);
         break;
     case 'por_delito':
-        $sql = "SELECT td.nombre AS delito, d.rut, d.apellidos_nombres
+        $sql = "SELECT td.nombre AS delito, dl.descripcion, d.rut, d.apellidos_nombres, dl.fecha
                 FROM delincuente d
                 JOIN delito dl ON dl.delincuente_id = d.id
                 JOIN tipo_delito td ON dl.tipo_id = td.id
@@ -34,13 +51,20 @@ switch ($reporte) {
         $datos = fetchAll($pdo, $sql);
         break;
     case 'por_comuna_domicilio':
-        $sql = "SELECT TRIM(SUBSTRING_INDEX(domicilio, ',', -1)) AS comuna, rut, apellidos_nombres
-                FROM delincuente ORDER BY comuna, apellidos_nombres";
+        $sql = "SELECT TRIM(SUBSTRING_INDEX(d.domicilio, ',', -1)) AS comuna, d.rut, d.apellidos_nombres,
+                       td.nombre AS delito, dl.descripcion, dl.fecha
+                FROM delincuente d
+                LEFT JOIN delito dl ON dl.delincuente_id = d.id
+                LEFT JOIN tipo_delito td ON dl.tipo_id = td.id
+                ORDER BY comuna, d.apellidos_nombres";
         $datos = fetchAll($pdo, $sql);
         break;
     case 'por_comuna_visto':
-        $sql = "SELECT TRIM(SUBSTRING_INDEX(ultimo_lugar_visto, ',', -1)) AS comuna_visto, rut, apellidos_nombres
-                FROM delincuente ORDER BY comuna_visto, apellidos_nombres";
+        $sql = "SELECT TRIM(SUBSTRING_INDEX(d.ultimo_lugar_visto, ',', -1)) AS comuna_visto,
+                       d.rut, d.apellidos_nombres, dl.fecha
+                FROM delincuente d
+                LEFT JOIN delito dl ON dl.delincuente_id = d.id
+                ORDER BY comuna_visto, d.apellidos_nombres";
         $datos = fetchAll($pdo, $sql);
         break;
     case 'parentesco':
@@ -100,6 +124,7 @@ switch ($reporte) {
 <div class="wrapper">
   <div class="content">
     <h2>Reportes</h2>
+    <h3><?= htmlspecialchars($reporte_nombres[$reporte] ?? '') ?></h3>
     <form method="get" action="" class="print-hide">
       <label for="reporte">Tipo de Reporte:</label>
       <select id="reporte" name="reporte" onchange="this.form.submit()">
