@@ -52,7 +52,11 @@ if ($format === 'html') {
         'Celular' => $persona['celular'],
         'Email' => $persona['email'],
         'Fecha Nac.' => $persona['fecha_nacimiento'],
-        'Delitos' => $persona['delitos'],
+        'Delitos' => (function($d){
+            if (empty($d)) return 'sin registros aun';
+            $c = count(array_filter(array_map('trim', explode(',', $d))));
+            return $c > 0 ? $c : 'sin registros aun';
+        })($persona['delitos']),
         'Estado' => $persona['estado'],
         'Último Lugar Visto' => $persona['ultimo_lugar_visto'],
         'Latitud' => $persona['latitud'],

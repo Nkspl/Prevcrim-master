@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const apellidosField = document.getElementById('apellidos');
     const apodoField = document.getElementById('apodo');
     const fechaField = document.getElementById('fecha_nacimiento');
+    const delitosField = document.getElementById('delitos');
 
     if (rutField) {
       rutField.addEventListener('blur', () => {
@@ -115,6 +116,16 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           })
           .catch(() => { /* ignorar errores */ });
+
+        if (delitosField) {
+          fetch(`/api/get_delitos_count.php?rut=${encodeURIComponent(rut)}`)
+            .then(r => r.ok ? r.json() : {count:0})
+            .then(info => {
+              const c = parseInt(info.count, 10);
+              delitosField.value = c > 0 ? String(c) : 'sin registros aun';
+            })
+            .catch(() => { delitosField.value = 'sin registros aun'; });
+        }
       });
     }
   }

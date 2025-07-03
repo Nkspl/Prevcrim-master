@@ -7,9 +7,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'operador') {
 
 require_once '../config.php';
 
-$stmtTipos = $pdo->query("SELECT nombre, descripcion FROM tipo_delito ORDER BY nombre");
-$tiposDelito = $stmtTipos->fetchAll();
-
 $id = $_GET['id'] ?? null;
 if (!$id) {
     echo "ID no válido.";
@@ -29,7 +26,11 @@ if (!$apellidos && !$nombres && !empty($delincuente['apellidos_nombres'])) {
     $nombres = $parts[1] ?? '';
 }
 
-$selectedDelitos = array_filter(array_map('trim', explode(',', $delincuente['delitos'])));
+
+$delitosCount = 0;
+if (!empty($delincuente['delitos'])) {
+    $delitosCount = count(array_filter(array_map('trim', explode(',', $delincuente['delitos']))));
+}
 
 // Estado actual guardado en la base de datos
 $estadoActual = $delincuente['estado'] ?? '';
@@ -97,13 +98,7 @@ if (!$delincuente) {
             </div>
             <div class="form-group">
                 <label for="delitos">Delitos:</label>
-                <select id="delitos" name="delitos[]" multiple>
-                    <?php foreach ($tiposDelito as $t): ?>
-                        <option value="<?= htmlspecialchars($t['nombre']) ?>" <?= in_array($t['nombre'], $selectedDelitos) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($t['nombre'] . ' - ' . $t['descripcion']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                <input id="delitos" name="delitos" readonly value="<?= $delitosCount > 0 ? $delitosCount : 'sin registros aun' ?>">
             </div>
             <div class="form-group">
                 <label for="estado">Estado:</label>
