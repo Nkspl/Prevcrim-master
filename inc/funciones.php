@@ -37,3 +37,19 @@ function validarRut($rut) {
     $dvCalculado = calcularDigitoVerificador($cuerpo);
     return $dvIngresado === $dvCalculado;
 }
+
+function logActividadUsuario(PDO $pdo, array $data): void {
+    $sql = "INSERT INTO usuario_actividad
+            (usuario_id, rut, nombre, rol, accion, datos, autor_id)
+            VALUES (:usuario_id, :rut, :nombre, :rol, :accion, :datos, :autor_id)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($data);
+}
+
+function logActividadDelincuente(PDO $pdo, array $data): void {
+    $sql = "INSERT INTO delincuente_actividad
+            (delincuente_id, rut, nombre, accion, datos, autor_id)
+            VALUES (:delincuente_id, :rut, :nombre, :accion, :datos, :autor_id)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($data);
+}
