@@ -1,7 +1,7 @@
 <?php
 // operador/ver_controles.php
 session_start();
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'operador') {
+if (!isset($_SESSION['rol']) || !in_array($_SESSION['rol'], ['operador', 'admin', 'jefe_zona'])) {
     header('Location: /login.php');
     exit;
 }

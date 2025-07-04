@@ -74,6 +74,11 @@
       <i class="fa-solid fa-gavel"></i> Registrar Delito
     </button>
   <?php endif; ?>
+  <?php if (!empty($_SESSION['rol']) && in_array($_SESSION['rol'], ['admin', 'jefe_zona'])): ?>
+    <button onclick="location.href='/operador/ver_controles.php';">
+      <i class="fa-solid fa-eye"></i> Ver Controles
+    </button>
+  <?php endif; ?>
   <button onclick="location.href='/operador/historial_delincuente.php';">
     <i class="fa-solid fa-book"></i> Historial
   </button>
