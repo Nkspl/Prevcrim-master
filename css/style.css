@@ -352,6 +352,6 @@ padding: 0 1rem;
 
 #delincuentes-search-form #btnImprimir {
   position: absolute;
-  top: -30px;
+  top: -20px; /* stay below the fixed header */
   left: 0;
 }
