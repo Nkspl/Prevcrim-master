@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
     <h2>Mapa de Delincuentes</h2>
 
     <!-- Formulario de Búsqueda -->
-    <div class="map-search">
+    <form id="searchForm" class="map-search">
       <label for="searchRut">RUT:</label>
       <select id="searchRut">
         <option value="">-- Selecciona un RUT --</option>
@@ -24,9 +24,9 @@ if (!isset($_SESSION['user_id'])) {
       <label for="searchApodo">Apodo:</label>
       <input type="text" id="searchApodo" placeholder="Apodo" autocomplete="off">
 
-      <button id="searchBtn">Buscar</button>
-      <button id="resetBtn">Mostrar Todos</button>
-    </div>
+      <button type="submit" id="searchBtn">Buscar</button>
+      <button type="button" id="resetBtn">Mostrar Todos</button>
+    </form>
 
     <!-- Contenedor del mapa -->
     <div id="map" style="height:500px;"></div>
@@ -112,11 +112,18 @@ if (!isset($_SESSION['user_id'])) {
       }
     });
 
-    document.getElementById('searchBtn').addEventListener('click', () => {
+    const searchForm = document.getElementById('searchForm');
+    const handleSearch = () => {
       const rut = document.getElementById('searchRut').value.trim();
       const nombre = document.getElementById('searchNombre').value.trim();
       const apodo = document.getElementById('searchApodo').value.trim();
       loadMarkers({ rut, nombre, apodo });
+    };
+
+    document.getElementById('searchBtn').addEventListener('click', handleSearch);
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      handleSearch();
     });
 
     document.getElementById('resetBtn').addEventListener('click', () => {
