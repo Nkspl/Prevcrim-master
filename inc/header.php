@@ -10,8 +10,11 @@
 
   <!-- RUTAS ABSOLUTAS: siempre arrancan en la raíz -->
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/jquery.dataTables.min.css">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.dataTables.min.js"></script>
   <script src="/js/script.js" defer></script>
 </head>
 <body>

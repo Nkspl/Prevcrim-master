@@ -51,7 +51,7 @@ $controles = $stmt->fetchAll();
     <button type="button" onclick="window.location.href='<?= $_SERVER['PHP_SELF'] ?>'">Mostrar todos</button>
   </form>
 
-  <table>
+  <table id="controlesTable">
     <thead>
       <tr>
         <th>ID</th>

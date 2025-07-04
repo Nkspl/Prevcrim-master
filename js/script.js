@@ -166,4 +166,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // Tabla de controles con DataTables
+  const ctlTable = document.getElementById('controlesTable');
+  if (ctlTable && window.jQuery && jQuery.fn.dataTable) {
+    jQuery(ctlTable).DataTable({
+      pageLength: 10,
+      order: [[0, 'desc']],
+      language: {
+        url: '/js/datatables_es.json'
+      }
+    });
+  }
 });
