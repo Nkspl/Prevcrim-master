@@ -91,7 +91,7 @@
   #sidebar {
     position: fixed;
     top: 60px; left: 0; bottom: 0;
-    width: 220px;
+    width: 15%;
     background: #003355;
     overflow-y: auto;
     transition: transform 0.3s ease;
