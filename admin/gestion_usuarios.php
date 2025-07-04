@@ -10,7 +10,7 @@ require_once '../config.php';
 <div class="wrapper">
   <div class="content">
     <h2>Gestión de Usuarios</h2>
-    <button onclick="location.href='nuevo_usuario.php'">Agregar Nuevo Usuario</button>
+    <button class="Actuali" onclick="location.href='nuevo_usuario.php'">Agregar Nuevo Usuario</button>
     <table>
       <thead>
         <tr><th>ID</th><th>RUT</th><th>Nombre</th><th>Rol</th>
@@ -32,10 +32,10 @@ require_once '../config.php';
           <td><?php echo htmlspecialchars($u['inst_nom']);?></td>
           <td><?php echo $u['fecha_habilitacion'];?></td>
           <td>
-            <button onclick="location.href='editar_usuario.php?id=<?php echo $u['id'];?>'">
+            <button class="Actuali" onclick="location.href='editar_usuario.php?id=<?php echo $u['id'];?>'">
               Editar
             </button>
-            <button onclick="if(confirm('¿Seguro?')) location.href=
+            <button class="Actuali" onclick="if(confirm('¿Seguro?')) location.href=
               'eliminar_usuario.php?id=<?php echo $u['id'];?>'">
               Eliminar
             </button>
