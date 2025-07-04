@@ -327,3 +327,31 @@ padding: 0 1rem;
    color:#f6f6f8;
    border: 3px solid #004466;
 }
+
+/* ==== Search form on listado_delincuentes.php ==== */
+#delincuentes-search-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#delincuentes-search-form #buscarInput {
+  width: 33%;
+  max-width: none;
+  padding: 6px;
+}
+
+#delincuentes-search-form #btnFiltrar,
+#delincuentes-search-form #btnImprimir {
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  height: 30px;
+  margin-top: 0;
+}
+
+#delincuentes-search-form #btnImprimir {
+  position: absolute;
+  top: -30px;
+  left: 0;
+}
