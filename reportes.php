@@ -99,7 +99,7 @@ switch ($reporte) {
         }
         $sql = "SELECT d.imagen, d.rut, d.apellidos_nombres, d.estado,
                        td.nombre AS tipo_delito, dl.descripcion,
-                       CONCAT(dl.comuna, ' / ', dl.sector) AS lugar, dl.fecha
+                       CONCAT(dl.comuna, ' / ', dl.sector) AS Comuna_Sector, dl.fecha
                 FROM delito dl
                 LEFT JOIN delincuente d ON dl.delincuente_id = d.id
                 LEFT JOIN tipo_delito td ON dl.tipo_id = td.id";
