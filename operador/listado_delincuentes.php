@@ -49,15 +49,16 @@ $delincuentes = $stmt->fetchAll();
     </p>
   <?php endif; ?>
 
-  <form method="GET" action="" style="padding-top: 87px;" class="print-hide">
+  <form method="GET" action="" style="padding-top: 87px;" class="print-hide" id="delincuentes-search-form">
+    <button type="button" onclick="window.print()" class="print-hide" id="btnImprimir">Imprimir</button>
     <input
       type="text"
       name="buscar"
+      id="buscarInput"
       placeholder="Buscar por nombre, apodo o delito"
       value="<?= htmlspecialchars($buscar) ?>">
-    <button type="submit">Filtrar</button>
+    <button type="submit" id="btnFiltrar">Filtrar</button>
     <button type="button" onclick="window.location.href='<?= $_SERVER['PHP_SELF'] ?>'">Mostrar todos</button>
-    <button type="button" onclick="window.print()" class="print-hide">Imprimir</button>
   </form>
 
   <div class="cards-container">
