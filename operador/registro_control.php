@@ -78,14 +78,6 @@ require_once '../config.php';
           <label for="revision_seguro">Revisión Técnica / SOAP:</label>
           <input id="revision_seguro" name="revision_seguro">
         </div>
-        <div class="form-group">
-          <label for="rut_conductor">RUT del Conductor:</label>
-          <input id="rut_conductor" name="rut_conductor">
-        </div>
-        <div class="form-group">
-          <label for="nombre_conductor">Nombre del Conductor:</label>
-          <input id="nombre_conductor" name="nombre_conductor">
-        </div>
       </div>
 
       <div id="seccion-armas" class="tipo-section" style="display:none;">
