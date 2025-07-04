@@ -342,17 +342,16 @@ padding: 0 1rem;
   padding: 6px;
 }
 
-#delincuentes-search-form #btnFiltrar {
+#delincuentes-search-form #btnFiltrar,
+#delincuentes-search-form #btnImprimir {
   padding: 4px 8px;
   font-size: 0.9rem;
   height: 30px;
+  margin-top: 0;
 }
 
 #delincuentes-search-form #btnImprimir {
   position: absolute;
-  top: -32px;
+  top: -30px;
   left: 0;
-  padding: 4px 8px;
-  font-size: 0.9rem;
-  height: 30px;
 }
