@@ -52,7 +52,7 @@ if ($rut) {
     </form>
 
     <?php if ($rut && $persona): ?>
-      <a href="descargar_historial.php?rut=<?= urlencode($rut) ?>&format=html" target="_blank">Descargar Reporte</a>
+      <a href="descargar_historial.php?rut=<?= urlencode($rut) ?>&format=html" target="_blank">Imprimir</a>
       <h3>Datos Personales</h3>
       <table>
         <tbody>
