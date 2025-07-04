@@ -8,6 +8,37 @@ if (!isset($_SESSION['rol']) || !in_array($_SESSION['rol'], ['operador', 'admin'
 
 require_once __DIR__ . '/../config.php';
 
+$allColumns = [
+    'id' => 'ID',
+    'tipo' => 'Tipo',
+    'rut' => 'RUT',
+    'nombre' => 'Nombre',
+    'apellido' => 'Apellido',
+    'motivo_desplazamiento' => 'Motivo Desplazamiento',
+    'ubicacion' => 'Ubicación',
+    'latitud' => 'Latitud',
+    'longitud' => 'Longitud',
+    'observacion' => 'Observación',
+    'licencia_conducir' => 'Licencia Conducir',
+    'padron_vehiculo' => 'Padrón Vehículo',
+    'revision_seguro' => 'Revisión/Seguro',
+    'rut_conductor' => 'RUT Conductor',
+    'nombre_conductor' => 'Nombre Conductor',
+    'pertenencias' => 'Pertenencias',
+    'permisos_arma' => 'Permisos Arma',
+    'revision_mochila' => 'Revisión Mochila',
+    'test_alcoholemia' => 'Test Alcoholemia',
+    'doc_vehicular' => 'Doc. Vehicular',
+    'created_at' => 'Fecha'
+];
+
+$colsByType = [
+    'identidad' => ['id','tipo','rut','nombre','apellido','motivo_desplazamiento','ubicacion','latitud','longitud','observacion','created_at'],
+    'vehicular' => ['id','tipo','rut','nombre','apellido','ubicacion','latitud','longitud','observacion','licencia_conducir','padron_vehiculo','revision_seguro','rut_conductor','nombre_conductor','created_at'],
+    'armas_drogas' => ['id','tipo','rut','nombre','apellido','ubicacion','latitud','longitud','observacion','pertenencias','permisos_arma','revision_mochila','created_at'],
+    'transito' => ['id','tipo','rut','nombre','apellido','ubicacion','latitud','longitud','observacion','test_alcoholemia','doc_vehicular','created_at']
+];
+
 $tipo   = $_GET['tipo']   ?? '';
 $buscar = trim($_GET['buscar'] ?? '');
 
@@ -32,6 +63,12 @@ $sql .= " ORDER BY id DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $controles = $stmt->fetchAll();
+
+if ($tipo !== '' && isset($colsByType[$tipo])) {
+    $columns = array_intersect_key($allColumns, array_flip($colsByType[$tipo]));
+} else {
+    $columns = $allColumns;
+}
 ?>
 <?php include __DIR__ . '/../inc/header.php'; ?>
 
@@ -49,63 +86,29 @@ $controles = $stmt->fetchAll();
     <input type="text" name="buscar" placeholder="Buscar por RUT o nombre" value="<?= htmlspecialchars($buscar) ?>">
     <button type="submit">Filtrar</button>
     <button type="button" onclick="window.location.href='<?= $_SERVER['PHP_SELF'] ?>'">Mostrar todos</button>
+    <?php $printUrl = '/operador/imprimir_controles.php?'.http_build_query(['tipo'=>$tipo,'buscar'=>$buscar]); ?>
+    <a href="<?= $printUrl ?>" target="_blank">Imprimir</a>
   </form>
 
   <table id="controlesTable">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Tipo</th>
-        <th>RUT</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Motivo Desplazamiento</th>
-        <th>Ubicación</th>
-        <th>Latitud</th>
-        <th>Longitud</th>
-        <th>Observación</th>
-        <th>Licencia Conducir</th>
-        <th>Padrón Vehículo</th>
-        <th>Revisión/Seguro</th>
-        <th>RUT Conductor</th>
-        <th>Nombre Conductor</th>
-        <th>Pertenencias</th>
-        <th>Permisos Arma</th>
-        <th>Revisión Mochila</th>
-        <th>Test Alcoholemia</th>
-        <th>Doc. Vehicular</th>
-        <th>Fecha</th>
+        <?php foreach ($columns as $label): ?>
+          <th><?= htmlspecialchars($label) ?></th>
+        <?php endforeach; ?>
       </tr>
     </thead>
     <tbody>
       <?php if ($controles): ?>
         <?php foreach ($controles as $c): ?>
           <tr>
-            <td><?= htmlspecialchars($c['id']) ?></td>
-            <td><?= htmlspecialchars($c['tipo']) ?></td>
-            <td><?= htmlspecialchars($c['rut']) ?></td>
-            <td><?= htmlspecialchars($c['nombre']) ?></td>
-            <td><?= htmlspecialchars($c['apellido']) ?></td>
-            <td><?= htmlspecialchars($c['motivo_desplazamiento']) ?></td>
-            <td><?= htmlspecialchars($c['ubicacion']) ?></td>
-            <td><?= htmlspecialchars($c['latitud']) ?></td>
-            <td><?= htmlspecialchars($c['longitud']) ?></td>
-            <td><?= htmlspecialchars($c['observacion']) ?></td>
-            <td><?= htmlspecialchars($c['licencia_conducir']) ?></td>
-            <td><?= htmlspecialchars($c['padron_vehiculo']) ?></td>
-            <td><?= htmlspecialchars($c['revision_seguro']) ?></td>
-            <td><?= htmlspecialchars($c['rut_conductor']) ?></td>
-            <td><?= htmlspecialchars($c['nombre_conductor']) ?></td>
-            <td><?= htmlspecialchars($c['pertenencias']) ?></td>
-            <td><?= htmlspecialchars($c['permisos_arma']) ?></td>
-            <td><?= htmlspecialchars($c['revision_mochila']) ?></td>
-            <td><?= htmlspecialchars($c['test_alcoholemia']) ?></td>
-            <td><?= htmlspecialchars($c['doc_vehicular']) ?></td>
-            <td><?= htmlspecialchars($c['created_at']) ?></td>
+            <?php foreach (array_keys($columns) as $col): ?>
+              <td><?= htmlspecialchars($c[$col]) ?></td>
+            <?php endforeach; ?>
           </tr>
         <?php endforeach; ?>
       <?php else: ?>
-        <tr><td colspan="21">No hay controles registrados.</td></tr>
+        <tr><td colspan="<?= count($columns) ?>">No hay controles registrados.</td></tr>
       <?php endif; ?>
     </tbody>
   </table>
