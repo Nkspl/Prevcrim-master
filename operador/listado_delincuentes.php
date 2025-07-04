@@ -49,7 +49,7 @@ $delincuentes = $stmt->fetchAll();
     </p>
   <?php endif; ?>
 
-  <form method="GET" action="" style="padding-top: 87px;">
+  <form method="GET" action="" style="padding-top: 87px;" class="print-hide">
     <input
       type="text"
       name="buscar"
@@ -57,6 +57,7 @@ $delincuentes = $stmt->fetchAll();
       value="<?= htmlspecialchars($buscar) ?>">
     <button type="submit">Filtrar</button>
     <button type="button" onclick="window.location.href='<?= $_SERVER['PHP_SELF'] ?>'">Mostrar todos</button>
+    <button type="button" onclick="window.print()" class="print-hide">Imprimir</button>
   </form>
 
   <div class="cards-container">

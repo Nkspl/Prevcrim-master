@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
     <h2>Mapa de Delincuentes</h2>
 
     <!-- Formulario de Búsqueda -->
-    <div class="map-search">
+    <div class="map-search print-hide">
       <label for="searchRut">RUT:</label>
       <select id="searchRut">
         <option value="">-- Selecciona un RUT --</option>
@@ -30,6 +30,7 @@ if (!isset($_SESSION['user_id'])) {
 
     <!-- Contenedor del mapa -->
     <div id="map" style="height:500px;"></div>
+    <button onclick="window.print()" class="print-hide">Imprimir</button>
   </div>
   <?php include 'inc/footer.php'; ?>
 </div>
