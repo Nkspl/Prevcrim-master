@@ -76,8 +76,8 @@ switch ($reporte) {
     case 'delitos_por_sector_fecha':
         $where = [];
         $params = [];
-        if ($comuna !== '') { $where[] = 'comuna = :comuna'; $params['comuna'] = $comuna; }
-        if ($sector !== '') { $where[] = 'sector = :sector'; $params['sector'] = $sector; }
+        if ($comuna !== '') { $where[] = 'comuna LIKE :comuna'; $params['comuna'] = "%$comuna%"; }
+        if ($sector !== '') { $where[] = 'sector LIKE :sector'; $params['sector'] = "%$sector%"; }
         if ($inicio !== '') { $where[] = 'fecha >= :inicio'; $params['inicio'] = $inicio; }
         if ($fin !== '') { $where[] = 'fecha <= :fin'; $params['fin'] = $fin; }
         $sql = 'SELECT codigo, descripcion, comuna, sector, fecha FROM delito';
@@ -90,19 +90,22 @@ switch ($reporte) {
         $datos = fetchAll($pdo, $sql);
         break;
     case 'busqueda_global':
-        $datos = [];
+        $where = [];
+        $params = [];
         if ($busqueda !== '') {
-            $p = "%$busqueda%";
-            $sql = "SELECT 'delincuente' AS tipo, rut, apellidos_nombres AS nombre, delitos AS detalle
-                    FROM delincuente
-                    WHERE apellidos_nombres LIKE :p OR delitos LIKE :p OR domicilio LIKE :p";
-            $d1 = fetchAll($pdo, $sql, ['p'=>$p]);
-            $sql = "SELECT 'delito' AS tipo, codigo AS rut, descripcion AS nombre, comuna AS detalle
-                    FROM delito
-                    WHERE descripcion LIKE :p OR comuna LIKE :p OR sector LIKE :p";
-            $d2 = fetchAll($pdo, $sql, ['p'=>$p]);
-            $datos = array_merge($d1, $d2);
+            $search = "%$busqueda%";
+            $where[] = '(d.rut LIKE :search OR d.apellidos_nombres LIKE :search OR dl.descripcion LIKE :search OR dl.comuna LIKE :search OR dl.sector LIKE :search)';
+            $params['search'] = $search;
         }
+        $sql = "SELECT d.imagen, d.rut, d.apellidos_nombres, d.estado,
+                       td.nombre AS tipo_delito, dl.descripcion,
+                       CONCAT(dl.comuna, ' / ', dl.sector) AS lugar, dl.fecha
+                FROM delito dl
+                LEFT JOIN delincuente d ON dl.delincuente_id = d.id
+                LEFT JOIN tipo_delito td ON dl.tipo_id = td.id";
+        if ($where) $sql .= ' WHERE '.implode(' AND ', $where);
+        $sql .= ' ORDER BY dl.fecha DESC';
+        $datos = fetchAll($pdo, $sql, $params);
         break;
     case 'ranking_comunas':
         $where = [];
@@ -167,8 +170,12 @@ switch ($reporte) {
         <tbody>
 <?php foreach ($datos as $row): ?>
           <tr>
-<?php foreach ($row as $val): ?>
+<?php foreach ($row as $k => $val): ?>
+            <?php if ($k === 'imagen'): ?>
+            <td><img src="<?= htmlspecialchars($val) ?>" style="max-width:50px;"></td>
+            <?php else: ?>
             <td><?= htmlspecialchars($val) ?></td>
+            <?php endif; ?>
 <?php endforeach; ?>
           </tr>
 <?php endforeach; ?>
