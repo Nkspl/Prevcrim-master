@@ -44,10 +44,6 @@ require_once '../config.php';
           <label for="motivo_desplazamiento">Motivo de Desplazamiento:</label>
           <input id="motivo_desplazamiento" name="motivo_desplazamiento">
         </div>
-        <div class="form-group">
-          <label for="observacion">Observación:</label>
-          <textarea id="observacion" name="observacion"></textarea>
-        </div>
       </div>
 
       <div id="seccion-ubicacion" class="tipo-section" style="display:none;">
@@ -62,6 +58,10 @@ require_once '../config.php';
         <div class="form-group">
           <label for="longitud">Longitud:</label>
           <input id="longitud" name="longitud" readonly>
+        </div>
+        <div class="form-group">
+          <label for="observacion">Observación:</label>
+          <textarea id="observacion" name="observacion"></textarea>
         </div>
       </div>
 
