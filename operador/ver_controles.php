@@ -34,7 +34,10 @@ $allColumns = [
 
 $colsByType = [
     'identidad' => ['id','tipo','rut','nombre','apellido','motivo_desplazamiento','ubicacion','latitud','longitud','observacion','created_at'],
-    'vehicular' => ['id','tipo','rut','nombre','apellido','ubicacion','latitud','longitud','observacion','licencia_conducir','padron_vehiculo','revision_seguro','rut_conductor','nombre_conductor','created_at'],
+    // En el listado de controles vehiculares ya no se muestran los datos del conductor
+    // por solicitud de la interfaz. Se eliminan las columnas "rut_conductor" y
+    // "nombre_conductor" para este tipo de control.
+    'vehicular' => ['id','tipo','rut','nombre','apellido','ubicacion','latitud','longitud','observacion','licencia_conducir','padron_vehiculo','revision_seguro','created_at'],
     'armas_drogas' => ['id','tipo','rut','nombre','apellido','ubicacion','latitud','longitud','observacion','pertenencias','permisos_arma','revision_mochila','created_at'],
     'transito' => ['id','tipo','rut','nombre','apellido','ubicacion','latitud','longitud','observacion','test_alcoholemia','doc_vehicular','created_at']
 ];
