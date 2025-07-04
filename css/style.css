@@ -95,6 +95,7 @@
     background: #003355;
     overflow-y: auto;
     transition: transform 0.3s ease;
+    z-index: 1100; /* sobreponer el contenido principal */
   }
   #sidebar.hidden {
     transform: translateX(-220px);
