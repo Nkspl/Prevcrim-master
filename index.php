@@ -13,51 +13,6 @@ if (isset($_SESSION['user_id'])) {
   <title>Login - SIPC</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="js/script.js" defer></script>
-  <style>
-    .login-container {
-      width: 320px;
-      margin: 100px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 4px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .login-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #004466;
-    }
-    .login-container .form-group {
-      margin-bottom: 15px;
-      display: flex;
-      flex-direction: column;
-    }
-    .login-container .form-group label {
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .login-container .form-group input {
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .login-container button {
-      width: 100%;
-      padding: 10px;
-      background: #004466;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .login-container .error {
-      color: red;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-  </style>
 </head>
 <body>
   <div class="login-container">
