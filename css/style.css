@@ -145,7 +145,8 @@
     margin: 80px 20px 20px 250px;
     background: var(--surface-color);
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
   
 
@@ -170,8 +171,17 @@
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background: var(--surface-color);
     width: 100%;
     max-width: 400px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
   }
   form button {
     margin-top: 20px;
@@ -181,6 +191,24 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  form button:hover {
+    background: var(--secondary-color);
+  }
+
+  /* Generic buttons outside sidebar/header */
+  button:not(#btnToggleSidebar):not(#sidebar button) {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  button:not(#btnToggleSidebar):not(#sidebar button):hover {
+    background: var(--secondary-color);
   }
   
 
@@ -223,11 +251,23 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background: var(--surface-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
   table th, table td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: left;
+  }
+  table th {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: 500;
+  }
+  table tr:nth-child(even) {
+    background-color: #f9f9f9;
   }
   
   /* Footer estatico */
@@ -297,14 +337,18 @@ padding: 0 1rem;
 
 .delincuente-card {
   background: var(--surface-color);
-  border: 5px solid var(--primary-color);
+  border: 1px solid #ddd;
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   width: 32%;
   padding: 20px;
   text-align: center;
-   font-size: 14px;
-   margin-bottom: 25px;
+  font-size: 14px;
+  margin-bottom: 25px;
+  transition: box-shadow 0.2s ease;
+}
+.delincuente-card:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 .delincuente-card img {
@@ -409,7 +453,7 @@ padding: 0 1rem;
   flex: 1 0 220px;
   background: var(--surface-color);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   padding: 20px;
   text-align: center;
   color: var(--text-color);
@@ -417,7 +461,7 @@ padding: 0 1rem;
   transition: box-shadow 0.2s ease;
 }
 .dashboard-card:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 .dashboard-card i {
   font-size: 32px;
